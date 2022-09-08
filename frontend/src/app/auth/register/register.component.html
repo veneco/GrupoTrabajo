@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="login">
+    <div class="login-triangle"></div>
+
+    <h2 class="login-header">Create an account</h2>
+
+    <form #frmRegister="ngForm" class="login-container" (ngSubmit)="onRegister(frmRegister)">
+      <p>
+        <input type="text" name="name" placeholder="name" ngModel required>
+      </p>
+      <p>
+        <input type="email" name="email" placeholder="Email" ngModel required>
+      </p>
+      <p>
+        <input type="password" name="password" placeholder="Password" ngModel required>
+      </p>
+      <p>
+        <select name="rol" id="rol" ngModel>
+          <option value="" disabled selected>Seleciona un Rol</option>
+          <option  type="text" *ngFor="let rol of roles" [value]="rol.valor">{{rol.name}}</option>
+        </select>
+      </p>
+      <p>
+        <input type="submit" value="Register">
+      </p>
+    </form>
+  </div>
+</div>
