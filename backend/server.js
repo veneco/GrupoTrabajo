@@ -23,7 +23,7 @@ app.use('/api', router);
 
 authRoutes(router);
 router.get('/', (req, res) => {
-  res.send('Hello from home');
+  res.send('server activo');
 });
 app.use(router);
 app.listen(propierties.PORT, () => console.log(`Server runing on port ${propierties.PORT}`));

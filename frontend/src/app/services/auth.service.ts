@@ -38,6 +38,31 @@ export class AuthService {
       );
   }
 
+  update(user: UserI): Observable<JwtResponseI> {
+    console.log(user)
+    return this.httpClient.post<JwtResponseI>(`${this.AUTH_SERVER}/update`,
+      user).pipe(tap(
+        (res: JwtResponseI) => {
+          if (res) {
+            // guardar token
+            this.saveToken(res.dataUser.accessToken, res.dataUser.expiresIn);
+          }
+        })
+      );
+  }
+
+  delete(user: UserI): Observable<JwtResponseI> {
+    console.log(user)
+    return this.httpClient.post<JwtResponseI>(`${this.AUTH_SERVER}/delete`,
+      user).pipe(tap(
+        (res: JwtResponseI) => {
+          if (res) {
+            // guardar token
+          //  this.saveToken(res.dataUser.accessToken, res.dataUser.expiresIn);
+          }
+        })
+      );
+  }
   logout(): void {
     this.token = '';
     localStorage.removeItem("ACCESS_TOKEN");

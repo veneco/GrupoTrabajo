@@ -24,7 +24,7 @@ exports.createUser = (req, res, next) => {
     const dataUser = {
       name: user.name,
       email: user.email,
-      rol: req.body.rol,
+      rol: user.rol,
       accessToken: accessToken,
       expiresIn: expiresIn
     }
@@ -66,7 +66,44 @@ exports.loginUser = (req, res, next) => {
   });
 }
 
+  exports.updateUser = (req, res) => {
+  const userData = {
+    name: req.body.name,
+    email: req.body.email,
+    rol: req.body.rol
+  }
+    User.findOneAndUpdate({ email: userData.email},
+                          {name: userData.name, rol: userData.rol}, (err, user) => {
+      if (err) return res.status(500).send('Server error!');
+      if (!user) {
+        res.status(409).send({ message: 'Something is wrong usuario no existe' });
+      }else{
+          
+          const dataUser = {
+            name: user.name,
+            email: user.email,
+            rol: user.rol
+          }
+          res.send({ dataUser });
+          
+    }});
 
+}
+
+exports.deleteUser = (req, res) => {
+  const userData = {
+    email: req.body.email
+  }
+    User.findOneAndRemove({ email: userData.email}, (err, user) => {
+      if (err) return res.status(500).send('Server error!');
+      if (!user) {
+        res.status(409).send({ message: 'Something is wrong usuario no existe  f' });
+      }else{
+          res.send( {message: 'usuario eliminado' });
+          
+    }});
+
+}
 
 
 

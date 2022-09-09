@@ -8,7 +8,14 @@ authSchema.statics = {
   },
   login: function (query, cb) {
     this.find(query, cb);
+  },
+  delete: function (query, cb) {
+    this.findOneAndDelete(query, cb);
+  },
+  update: function (query, cb) {
+    this.findOneAndUpdate(query, cb);
   }
+
 }
 
 const authModel = mongoose.model('Users', authSchema);
