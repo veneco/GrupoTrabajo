@@ -11,6 +11,7 @@ export class AuthService {
   AUTH_SERVER: string = 'http://localhost:3000';
   authSubject = new BehaviorSubject(false);
   private token: string;
+
   constructor(private httpClient: HttpClient) { }
 
   register(user: UserI): Observable<JwtResponseI> {
@@ -32,7 +33,7 @@ export class AuthService {
         (res: JwtResponseI) => {
           if (res) {
             // guardar token
-           this.saveToken(res.dataUser.accessToken,  res.dataUser.name);
+           this.saveDates(res.dataUser.name,  res.dataUser.rol);
           }
         })
       );
@@ -69,10 +70,17 @@ export class AuthService {
     localStorage.removeItem("EXPIRES_IN");
   }
 
+  
+
   private saveToken(token: string, expiresIn: string): void {
     localStorage.setItem("ACCESS_TOKEN", token);
     localStorage.setItem("EXPIRES_IN", expiresIn);
     this.token = token;
+  }
+
+  private saveDates(name: string, rol: string): void {
+    localStorage.setItem("NAME", name);
+    localStorage.setItem("ROL", rol);
   }
 
   private getToken(): string {

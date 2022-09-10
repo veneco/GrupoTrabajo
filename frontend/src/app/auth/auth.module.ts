@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { BoardComponent } from './board/board.component';
 import { DeleteComponent } from './delete/delete.component';
 import { UpdateComponent } from './update/update.component';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [RegisterComponent, LoginComponent, BoardComponent,
@@ -17,7 +18,8 @@ import { UpdateComponent } from './update/update.component';
     CommonModule,
     FormsModule,
     AuthRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ComponentsModule
   ],
   providers: [AuthService]
 
