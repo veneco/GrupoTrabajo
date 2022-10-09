@@ -1,0 +1,191 @@
+.container {
+    width: 900px;
+    height: 634px;
+}
+
+.datosinfo{
+background: #D9D9D9;
+border-style: solid;
+border-color: red;
+height: 34px;
+width: 79px;
+width: 353px;
+height: 571px;
+float: left;
+
+}
+.infotask{
+    background: #D9D9D9;
+    border-style: solid;
+    border-color: red;
+    width: 533px;
+    height: 571px;
+    left: 69px;
+    top: 276px;
+    float: left;
+}
+.subtask{
+    background: #D9D9D9;
+    border-style: solid;
+    border-color: red;
+    width: 533px;
+    height: 300px;
+    left: 69px;
+    top: 276px;
+    float: left;
+    
+}
+
+
+
+.app,
+.brand {
+  margin: 1em;
+  width: 10em;
+  height: 10em;
+}
+
+.app {
+  background-color: #1fa895;
+}
+
+.app--color-weight-example {
+  background-color: #136559;
+}
+
+.brand {
+  background-color: #df3b26;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.618;
+}
+
+body {
+  padding: 60px;
+}
+
+.agile-board {
+  display: flex;
+  margin: -10px;
+}
+
+.agile-board__column {
+  display: flex;
+  flex-direction: column;
+  width: 33.3333333333%;
+  padding: 10px;
+}
+
+.agile-board__column-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #dbdbdb;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.agile-board__issue-list {
+  flex-grow: 1;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: whitesmoke;
+}
+
+.issue {
+  display: block;
+  position: relative;
+  min-height: 90px;
+  padding: 1em;
+  padding-left: calc(1em + 19px);
+  border: 1px solid #c7c7c7;
+  background-color: white;
+  font-size: 14px;
+  cursor: move;
+}
+.issue:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
+  background-color: #b1dafb;
+}
+.issue:hover .issue__number {
+  color: #1f5ea8;
+  border-bottom-color: #1f5ea8;
+}
+.issue.is-resolved .issue__number {
+  text-decoration: line-through;
+}
+.issue + .issue {
+  border-top: 0;
+}
+
+.issue__type {
+  position: absolute;
+  left: 1em;
+  top: 18px;
+}
+
+.issue__priority {
+  position: absolute;
+  left: 1em;
+  top: calc(1em + 25px);
+}
+
+.issue__number,
+.issue__title {
+  margin-top: 0;
+  margin-right: calc(1em + 32px + 5px);
+  margin-bottom: 0;
+}
+
+.issue__number {
+  border-bottom: 1px solid transparent;
+  color: black;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 150ms ease-in;
+}
+
+.issue__assignee {
+  position: absolute;
+  right: 1em;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.issue__estimate {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  min-height: 1.618em;
+  min-width: 2em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  background-color: #dbdbdb;
+  border-radius: 999em;
+  font-size: 11px;
+  text-align: center;
+}
+
+.issue--bug:before {
+  background-color: #fa5021;
+}
+
+.issue--improvement:before {
+  background-color: #4caf58;
+}

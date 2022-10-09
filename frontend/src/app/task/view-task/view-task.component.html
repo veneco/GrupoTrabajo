@@ -1,0 +1,62 @@
+<div class="container">
+    <div class ="infotask">
+        <a>
+            <span>{{userid}}</span>
+            <br>
+            <span>{{tarea.nombre}}</span>
+            <br>
+            <span>{{tarea.descripcion}}</span>
+            <br>
+        </a>
+        <div class="subtask">
+            <ul class='agile-board__issue-list'> 
+                <li class='issue'>
+                    <i class='issue__type fa fa-check-square-o'></i>
+                    <i class='issue__priority fa fa-angle-up'></i>
+                    <div class='issue__assignee'>
+                      <img src='http://placekitten.com/g/48/48'>
+                    </div>
+                    <div class='issue__estimate'>12</div>
+                    <a class='issue__number' href='#'>ZUI-1328</a>
+                    <p class='issue__title'>Document utility class usage and best practices</p>
+                  </li>
+                  <li class='issue'>
+                    <i class='issue__type fa fa-check-square-o'></i>
+                    <i class='issue__priority fa fa-angle-up'></i>
+                    <div class='issue__assignee'>
+                      <img src='http://placekitten.com/g/48/48'>
+                    </div>
+                    <div class='issue__estimate'>12</div>
+                    <a class='issue__number' href='#'>ZUI-1328</a>
+                    <p class='issue__title'>Document utility class usage and best practices</p>
+                  </li>
+                  <li class='issue'>
+                    <i class='issue__type fa fa-check-square-o'></i>
+                    <i class='issue__priority fa fa-angle-up'></i>
+                    <div class='issue__assignee'>
+                      <img src='http://placekitten.com/g/48/48'>
+                    </div>
+                    <div class='issue__estimate'>12</div>
+                    <a class='issue__number' href='#'>ZUI-1328</a>
+                    <p class='issue__title'>Document utility class usage and best practices</p>
+                  </li>
+                  
+              </ul>
+        </div>
+    </div>
+    <div class="datosinfo">
+        <span>Detalles</span><br>
+        <span>Responsable  {{ownerNombre}}</span><br>
+        <span>Correo Responsable    {{ownerCorreo}} <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        <mat-menu #menu="matMenu">
+        <a *ngFor="let item of flujo"><button class="btSelectTodo" mat-menu-item (click)="changeStatus(tarea, item.valor, $event)">{{item.name}}</button></a>
+        </mat-menu></span><br>
+        <span>Fecha inicio  {{tarea.fechainicio}}</span><br>
+        <span>Fecha Fin  {{tarea.fechafin}}</span><br>
+
+    </div>
+
+    
+</div>

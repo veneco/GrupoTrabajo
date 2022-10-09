@@ -1,0 +1,21 @@
+<body>
+<div class='agile-board'>
+    <div class='agile-board__column'*ngFor="let flujoUp of flujos; let i = index">
+      <h3 class='agile-board__column-title'>{{flujoUp.nombre}}</h3>
+      <ul class='agile-board__issue-list'> 
+        <a *ngFor="let task of pruebas[i] ">
+            <li class='issue' (click)="onCreate(task)">
+            <i class='issue__type fa fa-check-square-o'></i>
+            <i class='issue__priority fa fa-angle-up'></i>
+            <div class='issue__assignee'>
+                <img src='http://placekitten.com/g/48/48'>
+            </div>
+            <div class='issue__estimate'>12</div>
+            <a class='issue__number' >{{task.id}}</a>
+            <p class='issue__title'>{{task.nombre}}</p>
+            </li>
+        </a>
+      </ul>
+    </div>
+</div>
+</body>

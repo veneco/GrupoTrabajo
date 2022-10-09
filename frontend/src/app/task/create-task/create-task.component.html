@@ -1,0 +1,64 @@
+<div class="form">
+    <mat-card class="card">
+        <mat-card-title>Crear Tarea</mat-card-title>
+        <mat-card-content>
+            <div class="container">
+                <mat-form-field>
+                    <input [(ngModel)]="createTask.name" matInput placeholder="Nombre">
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea  [(ngModel)]="createTask.description" matInput placeholder="Descripcion"></textarea>
+                </mat-form-field>
+                <section>
+                    <mat-checkbox class="example-margin" [(ngModel)]="createTask.flujotarea">Prefabricado</mat-checkbox>
+                </section>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha Inicio</mat-label>
+                    <input [(ngModel)]="createTask.fechainicio" matInput [matDatepicker]="picker1">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha Fin</mat-label>
+                    <input [(ngModel)]="createTask.fechafin" matInput [matDatepicker]="picker2">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                   
+                <mat-form-field>
+                    <input matInput readonly [(ngModel)]="createTask.creadopor" matInput placeholder={{prueba}}>
+                    <mat-hint>Creado por</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Responsable</mat-label>
+                    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                <mat-form-field>
+                    <input matInput readonly [(ngModel)]="createTask.flujoproceso" matInput placeholder={{prueba}}>
+                    <mat-hint>Estado</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input [(ngModel)]="createTask.grupotrabajo" matInput placeholder="Grupo de Trabajo">
+                </mat-form-field>
+                <mat-form-field>
+                    <input [(ngModel)]="createTask.estadotarea" matInput placeholder="desarrollo progreso">
+                </mat-form-field>
+                <mat-form-field>
+                    <input [(ngModel)]="createTask.estadotarea" matInput placeholder="normal urgente">
+                </mat-form-field>
+                <input type="file" (change)="onFileSelected($event)">
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <!--<button (click)="create()" class="button" mat-raised-button color="accent">Create Task</button>-->
+            <button (click)="createUploadImage()" class="button" mat-raised-button color="accent">Create Task</button> 
+        </mat-card-actions>
+    </mat-card>
+</div>
