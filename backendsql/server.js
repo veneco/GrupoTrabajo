@@ -4,6 +4,7 @@ const users = require('./api/users')
 const auth = require('./api/auth')
 const flujo = require('./api/flujo')
 const task = require('./api/task')
+const prioridad = require('./api/prioridad')
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use('/api/users', users)
 app.use('/api/auth', auth)
 app.use('/api/flujo', flujo)
 app.use('/api/task', task)
+app.use('/api/prioridad', prioridad)
 
 const port = process.env.PORT || 3003
 app.listen(port, () => console.log('conectado en el puerto '+ port));

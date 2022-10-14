@@ -33,6 +33,8 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { ViewTaskComponent } from './task/view-task/view-task.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
+import { EditTaskComponent } from './task/edit-task/edit-task.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     SignupComponent,
     CreateTaskComponent,
     ListTaskComponent,
-    ViewTaskComponent
+    ViewTaskComponent,
+    EditTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule,
+    
 
   ],
   providers: [AuthService, TaskService, AuthGuard,

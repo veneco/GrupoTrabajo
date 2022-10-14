@@ -7,7 +7,6 @@ const auth = require('../middleware/auth')
 router.get('/list',auth, async (req, res) => {
     let iduser = req.user.id
     let id =req.body.user;
-    console.log(req.body)
     try {
         let user = await db.usuario.findAll({ where: { id: iduser } })
         if(!user) return res.status(400).send('Usuario no esta en Base de Datos')
@@ -20,11 +19,23 @@ router.get('/list',auth, async (req, res) => {
 
 router.get('/rol',auth, async (req, res) => {
     let iduser = await req.user.id
-    console.log(iduser)
         try {
             let user = await db.usuario.findOne({ where: { id: iduser } })
-            console.log(user)
             res.status(200).send(user)
+        } catch (error) {
+            res.status(400).send(error)
+        }
+
+   
+});
+
+router.get('/grupo',auth, async (req, res) => {
+    let usuario = await req.user;
+    let grupotrabajoId = await req.user.grupo
+        try {
+            let users = await db.usuario.findAll({ where: { grupotrabajo_id: grupotrabajoId } })
+            let grupo = await db.grupotrabajo.findAll({ where: { id: grupotrabajoId } })
+            res.status(200).send({users, usuario, grupo})
         } catch (error) {
             res.status(400).send(error)
         }

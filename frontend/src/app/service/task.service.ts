@@ -19,7 +19,15 @@ export class TaskService {
 
   private flujo = "http://localhost:3003/api/flujo/list"
 
+  private grupoTrabajo = "http://localhost:3003/api/users/grupo"
+
+  private prioridad = "http://localhost:3003/api/prioridad/list"
+
   constructor(private http: HttpClient) { }
+
+  getTokenID(){
+    return localStorage.getItem('task')
+  }
 
   createImageUpload(task){
     return this.http.post<any>(this.taskImageUploadUrl, task)
@@ -48,11 +56,26 @@ export class TaskService {
     return this.http.post<any>(this.listTaskUrl, status)
   }
 
+  getTask(taskID){
+    console.log("en " + taskID)
+    const id = taskID
+    const url = `${this.taskUrl}/${id}`
+    return this.http.get<any>(url)
+  }
+
   getOwner(){
     return this.http.get<any>(this.owner)
   }
 
   getFlujo(){
     return this.http.get<any>(this.flujo)
+  }
+
+  getGrupo(){
+    return this.http.get<any>(this.grupoTrabajo)
+  }
+
+  getPrioridad(){
+    return this.http.get<any>(this.prioridad)
   }
 }

@@ -21,12 +21,13 @@ module.exports = (sequelize, DataTypes) => {
     responsable: DataTypes.STRING,
     fechainicio: DataTypes.DATE,
     fechafin: DataTypes.DATE,
-    flujotarea: DataTypes.INTEGER,
+    esflujo: DataTypes.INTEGER,
     deleted: DataTypes.INTEGER,
     flujoproceso_id: DataTypes.INTEGER,
     grupotrabajo_id: DataTypes.INTEGER,
     estadotarea_id: DataTypes.INTEGER,
     prioridad_id: DataTypes.INTEGER,
+    etiqueta_id: DataTypes.INTEGER,
 
   }, {
     sequelize,

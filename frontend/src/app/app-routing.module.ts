@@ -5,6 +5,8 @@ import { ListTaskComponent } from './task/list-task/list-task.component';
 import { CreateTaskComponent } from './task/create-task/create-task.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from './guard/auth.guard'
+import { ViewTaskComponent } from './task/view-task/view-task.component';
+import { EditTaskComponent } from './task/edit-task/edit-task.component';
 
 
 const routes: Routes = [
@@ -30,6 +32,10 @@ const routes: Routes = [
   {
     path: 'signup',
     component: SignupComponent
+  },
+  {
+    path: 'editTask',
+    component: EditTaskComponent
   }
 ];
 

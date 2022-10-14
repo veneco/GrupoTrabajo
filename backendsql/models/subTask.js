@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class flujo extends Model {
+  class task extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,16 +13,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  flujo.init({
-    orden: DataTypes.INTEGER,
+  task.init({
+    finalizada: DataTypes.INTEGER,
     nombre: DataTypes.STRING,
+    descripcion: DataTypes.STRING,
+    responsable: DataTypes.STRING,
     deleted: DataTypes.INTEGER,
+    tarea_id: DataTypes.INTEGER,
+    flujoproceso_id: DataTypes.INTEGER,
+    estadotarea_id: DataTypes.INTEGER,
+    prioridad_id: DataTypes.INTEGER,
+
   }, {
     sequelize,
-    modelName: 'flujo',
-    tableName: 'flujoproceso',
+    modelName: 'subtask',
+    tableName: 'subtarea',
     createdAt: false,
     updatedAt: false,
   });
-  return flujo;
+ 
+
+  return task;
 };

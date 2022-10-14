@@ -1,0 +1,60 @@
+<div class="form">
+    <mat-card class="card">
+        <mat-card-title>Editar Tarea</mat-card-title>
+        <mat-card-content>
+            <div class="container">
+                <mat-form-field>
+                    <input [(ngModel)]="editTask.nombre" matInput placeholder="Nombre">
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea  [(ngModel)]="editTask.descripcion" matInput placeholder="Descripcion"></textarea>
+                </mat-form-field>
+                <section>
+                    <mat-checkbox class="example-margin" [(ngModel)]="editTask.flujotarea">Prefabricado</mat-checkbox>
+                </section>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha Inicio</mat-label>
+                    <input [(ngModel)]="editTask.fechainicio" matInput [matDatepicker]="picker1">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fecha Fin</mat-label>
+                    <input [(ngModel)]="editTask.fechafin" matInput [matDatepicker]="picker2">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>                   
+
+                <mat-form-field appearance="fill">
+                    <mat-select [(ngModel)]="editTask.responsable" placeholder="Responsable">
+                        <mat-option  *ngFor="let element of miembros" [value]="element.id">
+                            {{element.nombre}} {{element.apellidop}} {{element.apellidom}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill">
+                    <mat-select [(ngModel)]="editTask.grupotrabajo" placeholder="Grupo de Trabajo">
+                        <mat-option *ngFor="let element of grupo" [value]="element.id">
+                            {{element.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-select [(ngModel)]="editTask.prioridad"  placeholder="Prioridad">
+                        <mat-option *ngFor="let element of prioridad" [value]="element.id">
+                            {{element.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <!--<button (click)="create()" class="button" mat-raised-button color="accent">Create Task</button>-->
+            <button (click)="updateTask()" class="button" mat-raised-button color="accent">Editar Tarea</button> 
+        </mat-card-actions>
+    </mat-card>
+</div>

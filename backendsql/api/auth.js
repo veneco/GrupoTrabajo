@@ -4,6 +4,7 @@ const { Sequelize } = require("../models");
 const router = express.Router();
 const jwt = require('jsonwebtoken')
 
+//LOGEARSE
 router.post('/', async (req, res) => {
     let correo =req.body.correo;
     let password =req.body.password;
@@ -17,7 +18,8 @@ router.post('/', async (req, res) => {
             correo: correo,
             rut: user.rut,
             rol: user.rol_id,
-            id: user.id,    
+            id: user.id,
+            grupo: user.grupotrabajo_id,    
         }, "secretKey")
 
         res.status(200).send({jwtToken})

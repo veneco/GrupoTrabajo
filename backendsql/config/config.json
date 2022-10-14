@@ -2,7 +2,7 @@
   "development": {
     "username": "admin",
     "password": "duoc1234",
-    "database": "ProcessSa",
+    "database": "ProcessSA2",
     "host": "dbcontroltareas.ct2rrxcaxo9w.us-east-1.rds.amazonaws.com",
     "port":"3306",
     "dialect": "mysql"

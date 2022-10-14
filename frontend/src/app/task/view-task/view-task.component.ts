@@ -1,6 +1,6 @@
-import { Component, DoCheck, Inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Inject, Input, OnInit} from '@angular/core';
 import { TaskService } from '../../service/task.service';
-import { MatDialog, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
   templateUrl: './view-task.component.html',
   styleUrls: ['./view-task.component.css']
 })
-export class ViewTaskComponent implements OnInit, OnChanges {
+export class ViewTaskComponent implements OnInit {
 
   @Input() title: any;
-  
+  valor
   tasks = []
   prueba = []
   pruebas = []
@@ -29,8 +29,10 @@ export class ViewTaskComponent implements OnInit, OnChanges {
             private snackBar: MatSnackBar,
             @Inject(MAT_DIALOG_DATA) public data) { 
               this.flujo = data.flujos
+              console.log(data.flujos)
+              console.log(this.flujo)
               this.tarea = data.select
-
+              localStorage.setItem('task', data.select.id)
             }
 
   ngOnInit() {
@@ -44,10 +46,7 @@ export class ViewTaskComponent implements OnInit, OnChanges {
       err=> console.log(err)       
     )
   }
-  ngOnChanges(event: SimpleChanges): void {
-  console.log(event)
 
-  }
 
 cargarView(datos){
   
@@ -59,15 +58,13 @@ cargarView(datos){
 
 }
 changeStatus(selectTask, status, event){
-  //console.log(event)
   const temporalStatus = selectTask.status
-  selectTask.status = status
+  selectTask.flujoproceso_id = status
   this.taskService.editTask(selectTask)
     .subscribe(
       res=>{
-        selectTask.status = status
+        selectTask.flujoproceso = status
         console.log(res)
-        this.router.navigate(['/tasks'])
       },
       err=>{
         console.log(err)
@@ -82,7 +79,6 @@ changeStatus(selectTask, status, event){
         }
       }
     )
-    location.reload()
     
    // location.reload()
 }
@@ -97,7 +93,14 @@ getAt(){
       },
       err=> console.log(err)
     )
+    
   });
 
+
+}
+
+close(){
+    this.valor = true
+   // location.reload()
 }
 }

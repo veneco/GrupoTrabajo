@@ -4,7 +4,11 @@
     </ul>
     <ul>
             <a *ngIf="authService.isLogged()"><a routerLink="create">Crear</a></a> 
+
     </ul>
+    <ul>
+        <a *ngIf="authService.isLogged()"><a routerLink="view">View</a></a> 
+</ul>
 
     <span class="spacer"></span>
     <ul>

@@ -2,13 +2,15 @@ const db = require ("../models");
 const express = require('express');
 const { Sequelize } = require("../models");
 const router = express.Router();
-//LLAMAR LOS FLUJOS
-router.get('/list', async (req, res) => {
+const auth = require('../middleware/auth')
+
+//LLAMAR PRIORIDAD
+router.get('/list', auth, async (req, res) => {
 
     try {
-        const flujo = await db.flujo.findAll({ where: { deleted: 0} })
+        const prioridad = await db.prioridad.findAll()
  
-        res.status(200).send(flujo)
+        res.status(200).send(prioridad)
     } catch (error) {
         res.status(400).send('no se pudo logear '+ error)
     }

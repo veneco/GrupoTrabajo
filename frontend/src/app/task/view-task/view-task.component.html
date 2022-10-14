@@ -51,11 +51,17 @@
             <mat-icon>more_vert</mat-icon>
           </button>
         <mat-menu #menu="matMenu">
-        <a *ngFor="let item of flujo"><button class="btSelectTodo" mat-menu-item (click)="changeStatus(tarea, item.valor, $event)">{{item.name}}</button></a>
+        <a *ngFor="let item of flujo"><button class="btSelectTodo" mat-menu-item (click)="changeStatus(tarea, item.id, $event)">{{item.nombre}}</button></a>
         </mat-menu></span><br>
         <span>Fecha inicio  {{tarea.fechainicio}}</span><br>
         <span>Fecha Fin  {{tarea.fechafin}}</span><br>
-
+        <span>Detalles</span><br>
+        <div class="example-button-container">
+          <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" routerLink="editTask" [mat-dialog-close]=valor (click)="close()">
+            <a ></a>
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </div>
     </div>
 
     

@@ -3,11 +3,9 @@ import { TaskService } from '../../service/task.service'
 import { MatSnackBar } from '@angular/material'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Router } from '@angular/router'
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule, MatDialog} from '@angular/material';
 import { ViewTaskComponent } from '../view-task/view-task.component';
-import { compileNgModule, identifierModuleUrl, viewClassName } from '@angular/compiler';
+
 
 
 
@@ -34,13 +32,14 @@ export class ListTaskComponent implements OnInit, OnChanges {
     datos =[]
     pruebas=[]
     status
-
+    
     ngOnChanges(changes: SimpleChanges): void {
       console.log(changes);
     }
     
   ngOnInit() {
-    this.rol = localStorage.user
+    this.rol = 2
+    this.pruebas.push()
     /*this.taskService.getTasks()
       .subscribe(
         res=>{
@@ -55,40 +54,17 @@ export class ListTaskComponent implements OnInit, OnChanges {
       .subscribe(
         res=>{
           this.flujos = res
-          //variable = this.flujos[0].status
-          this.getAt()
+          this.getTareas()
           console.log(res)
         },  
         err=> console.log(err)       
       )
       
+      
   }
 
 
-  changeStatus(selectTask, status){
-    const temporalStatus = selectTask.status
-    selectTask.status = status
-    this.taskService.editTask(selectTask)
-      .subscribe(
-        res=>{
-          selectTask.status = status
-          console.log(res)
-        },
-        err=>{
-          console.log(err)
-          selectTask.status = temporalStatus
-          if(err instanceof HttpErrorResponse){
-            if(err.status === 401){
-              this.snackBar.open("No estas logeado... Enviando a Login", null, {
-                duration: 2000
-              })
-              this.router.navigate(['/login'])
-            }
-          }
-        }
-      )
 
-  }
   delete(deleteTask){
     this.taskService.deleteTask(deleteTask)
       .subscribe(
@@ -117,7 +93,6 @@ export class ListTaskComponent implements OnInit, OnChanges {
   }
  
   onCreate(selectTask){
-    console.log(selectTask)
     this.dialog.open(ViewTaskComponent,{
       data:{
         flujos: this.flujos,
@@ -133,7 +108,7 @@ export class ListTaskComponent implements OnInit, OnChanges {
       
   }
 
-  getAt(){
+  getTareas(){
     this.flujos.forEach((element, index)=> {
       this.taskService.getTasks(element)
       .subscribe(
