@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { CargarScriptsService } from 'src/app/service/cargarJs/cargar-scripts.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'frontend';
+
+  constructor(
+    private _CargarScripts:CargarScriptsService
+    ) { 
+      this._CargarScripts.Cargar(["style"])   
+    }
 }

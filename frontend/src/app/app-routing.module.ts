@@ -1,43 +1,41 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ListTaskComponent } from './task/list-task/list-task.component';
-import { CreateTaskComponent } from './task/create-task/create-task.component';
-import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from './guard/auth.guard'
+import { CreateTaskComponent } from './task/create-task/create-task.component';
 import { ViewTaskComponent } from './task/view-task/view-task.component';
-import { EditTaskComponent } from './task/edit-task/edit-task.component';
+import { ManagerTaskComponent } from './task/manager-task/manager-task.component';
 
-
-const routes: Routes = [
-  {
-    path: '',
-    component: LoginComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'tasks',
-    component: ListTaskComponent,
+const routes: Routes = [ {
+  path: '',
+  component: LoginComponent,
+  pathMatch: 'full'
+},
+{
+  path: 'tasks/manager',
+  component: ManagerTaskComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: 'tasks',
+  component: ListTaskComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: 'create',
+  component: CreateTaskComponent,
+  canActivate: [AuthGuard]
+},
+{
+    path: 'view',
+    component: ViewTaskComponent,
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'create',
-    component: CreateTaskComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'signup',
-    component: SignupComponent
-  },
-  {
-    path: 'editTask',
-    component: EditTaskComponent
-  }
-];
+},
+{
+  path: 'login',
+  component: LoginComponent
+}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

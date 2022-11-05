@@ -1,12 +1,9 @@
-import { Component, DoCheck, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { TaskService } from '../../service/task.service'
-import { MatSnackBar } from '@angular/material'
+import { Component,OnInit} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http'
 import { Router } from '@angular/router'
-import {MatDialogModule, MatDialog} from '@angular/material';
-import { ViewTaskComponent } from '../view-task/view-task.component';
-
-
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TaskService } from 'src/app/service/task.service';
+import { CargarScriptsService } from 'src/app/service/cargarJs/cargar-scripts.service';
 
 
 @Component({
@@ -14,65 +11,82 @@ import { ViewTaskComponent } from '../view-task/view-task.component';
   templateUrl: './list-task.component.html',
   styleUrls: ['./list-task.component.css']
 })
-export class ListTaskComponent implements OnInit, OnChanges {
+export class ListTaskComponent implements OnInit {
 
-  
+//@ViewChild('asStyle')  estilo: ElementRef;
 
   constructor(private taskService: TaskService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialog: MatDialog
-    ) { }
-
-    rol
-    tasks = []
-    userid
-    ownerData; ownerName
-    flujos = []
-    datos =[]
-    pruebas=[]
-    status
-    
-    ngOnChanges(changes: SimpleChanges): void {
-      console.log(changes);
+    private _CargarScripts:CargarScriptsService
+    ) { 
+     
     }
-    
-  ngOnInit() {
-    this.rol = 2
-    this.pruebas.push()
-    /*this.taskService.getTasks()
-      .subscribe(
-        res=>{
-          this.tasks = res
-          this.userid = this.tasks[0]._id
-          console.log(this.userid)
-        },
-        err=> console.log(err)
-      ),*/
 
+    mili = 24*60*60*1000
+    datetoday:any = new Date()
+    tasks:any = []
+    flujosInstanciado:any = []
+    datos:any =[]
+    notificaciones:any =[]
+    rol:any = localStorage.getItem('rol')
+
+    
+  async ngOnInit() {
       this.taskService.getFlujo()
       .subscribe(
         res=>{
-          this.flujos = res
-          this.getTareas()
-          console.log(res)
+          let tempFlujo = res.flujo[0]
+          console.log(tempFlujo)
+          this.datos = res.userData
+          let tempAvance
+          for (let i = 0; i < tempFlujo.length; i++) {
+            tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
+            
+            tempAvance = new Date(tempFlujo[i].FECHAINICIO)
+            let finalTemp = Math.abs(tempAvance.getTime()-new Date().getTime())
+            let avan = Math.round(finalTemp/this.mili)
+            console.log(avan+" "+ tempFlujo[i].NOMBRE)
+            this.flujosInstanciado.push(tempFlujo[i])           
+          }          
         },  
-        err=> console.log(err)       
+        err=>{
+          console.log(err) 
+        }     
+      ),
+      this.taskService.getNoti()
+      .subscribe(
+        res=>{
+          this.notificaciones = res
+          console.log(this.notificaciones)    
+        },  
+        err=>{
+          console.log(err) 
+        }     
       )
-      
-      
+      this.datetoday =  this.datetoday.getDate() + "-"
+      +(this.datetoday.getMonth()+1) + "-"
+      +this.datetoday.getFullYear()
   }
 
+  viewFlujo(data:any){
+    localStorage.setItem('flujo', data.ID)
+    this.router.navigate(['/view'])
+  }
+  formatDate(date: any): string{   
+    let fecha = new Date(date);
+    return fecha.toISOString().split('T')[0]
 
+  }
 
-  delete(deleteTask){
+  delete(deleteTask:any){
     this.taskService.deleteTask(deleteTask)
       .subscribe(
         res=>{
           const index = this.tasks.indexOf(deleteTask)
           if(index>-1){
             this.tasks.splice(index,1)
-            this.snackBar.open("Tarea Borrada", null, {
+            this.snackBar.open("Tarea Borrada", "", {
               duration: 2000
             })
           }
@@ -81,7 +95,7 @@ export class ListTaskComponent implements OnInit, OnChanges {
           console.log(err)
           if(err instanceof HttpErrorResponse){
             if(err.status === 401){
-              this.snackBar.open("No estas logeado", null, {
+              this.snackBar.open("No estas logeado", "", {
                 duration: 2000
               })
               this.router.navigate(['/login'])
@@ -90,42 +104,8 @@ export class ListTaskComponent implements OnInit, OnChanges {
         }
       )
       
-  }
- 
-  onCreate(selectTask){
-    this.dialog.open(ViewTaskComponent,{
-      data:{
-        flujos: this.flujos,
-        select: selectTask
-      }
-    })
-    
-    
-    //ViewTaskComponent.prototype.cargarView(selectTask)
-    
-    
-     //console.log(selectTask._id)
-      
-  }
-
-  getTareas(){
-    this.flujos.forEach((element, index)=> {
-      this.taskService.getTasks(element)
-      .subscribe(
-        res=>{
-          //this.tasks = res
-          //this.userid = this.tasks[0]._id
-          this.pruebas[index]= res
-          //console.log(this.tasks)
-          console.log(this.pruebas)
-        },
-        err=> console.log(err)
-      )
-    }
-    );
-
-  }
-
+  }      
 }
+
 
 

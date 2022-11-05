@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 function auth(req, res, next){
+    
     let jwtToken = req.header('Authorization')
     if(!jwtToken) return res.status(401).send('Acceso Denegado. No hay token')
     jwtToken = jwtToken.split(' ')[1]

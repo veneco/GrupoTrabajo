@@ -8,27 +8,9 @@ import { AuthService } from '../service/auth.service'
 })
 export class HeaderComponent implements OnInit {
 
-  userData
+  constructor(public authService: AuthService) { }
 
-  constructor(private authService: AuthService) { }
-  
-  ngOnInit() {
-    
-    this.authService.getRol()
-    .subscribe(
-      res=>{
-        this.userData = res.rol
-
-        console.log(this.userData)
-      },  
-      err=> console.log(err)       
-    )
+  ngOnInit(): void {
   }
 
-  roladmin(){
-    if(this.userData == 1) 
-    return true
-    else return false
-  
-  }
 }

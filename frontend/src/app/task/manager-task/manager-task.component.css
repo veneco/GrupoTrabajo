@@ -1,0 +1,13 @@
+.mat-tab-group {
+    margin-bottom: 48px;
+  }
+
+.label{
+    width: 1200px;
+}
+mat-selection-list {
+  width: 100%;
+}
+table {
+  width: 100%;
+}

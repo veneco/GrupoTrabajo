@@ -15,13 +15,17 @@ export class TaskService {
 
   private taskImageUploadUrl = "http://localhost:3003/api/task/upload"
 
-  private owner = "http://localhost:3003/api/users/list"
+  private grupo = "http://localhost:3003/api/users/grupo"
 
   private flujo = "http://localhost:3003/api/flujo/list"
 
-  private grupoTrabajo = "http://localhost:3003/api/users/grupo"
+  private flujoPL = "http://localhost:3003/api/flujo/flujoPL"
 
-  private prioridad = "http://localhost:3003/api/prioridad/list"
+  private flujoIN = "http://localhost:3003/api/flujo/"
+
+  private tareaPL = "http://localhost:3003/api/task/taskPL"
+
+  private taskView = "http://localhost:3003/api/task/list"
 
   constructor(private http: HttpClient) { }
 
@@ -29,53 +33,68 @@ export class TaskService {
     return localStorage.getItem('task')
   }
 
-  createImageUpload(task){
+  createImageUpload(task:any){
     return this.http.post<any>(this.taskImageUploadUrl, task)
   }
 
-  createTask(task){
-    return this.http.post<any>(this.taskUrl, task)
+  createFlujo(flujo:any){
+
+    return this.http.post<any>(this.flujoIN, flujo)
   }
 
-  editTask(task){
+  createTask(task:any, id:any, responsable:any){
+    const url = `${this.taskUrl}/${id}`
+    return this.http.post<any>(url, task)
+  }
+
+  setTask(task:any){
     return this.http.put<any>(this.taskUrl, task)
   }
-
-  llamarUnaTarea(task){
-   
-    return this.http.put<any>(this.taskUna, task)
+  setTaskEstado(task:any){
+    const url = `${this.taskUrl}/acepRecha`
+    return this.http.put<any>(url, task)
+  }
+  getNoti(){
+    const url = `${this.taskUrl}/not`
+    return this.http.post<any>(url, null)
   }
 
-  deleteTask(task){
+  deleteTask(task:any){
     const _id = task._id
     const url = `${this.taskUrl}/${_id}`
     return this.http.delete<any>(url)
   }
 
-  getTasks(status){
+  getTasks(status:any){
     return this.http.post<any>(this.listTaskUrl, status)
   }
 
-  getTask(taskID){
-    console.log("en " + taskID)
+
+  getTask(taskID:any){
     const id = taskID
     const url = `${this.taskUrl}/${id}`
     return this.http.get<any>(url)
   }
 
-  getOwner(){
-    return this.http.get<any>(this.owner)
+  getGrupo(){
+    return this.http.get<any>(this.grupo)
   }
 
   getFlujo(){
     return this.http.get<any>(this.flujo)
   }
 
-  getGrupo(){
-    return this.http.get<any>(this.grupoTrabajo)
+  getFlujoPL(){
+    return this.http.get<any>(this.flujoPL)
   }
 
-  getPrioridad(){
-    return this.http.get<any>(this.prioridad)
+  getTareaPL(){
+    return this.http.get<any>(this.tareaPL)
   }
+  setReasignarTarea(task:any)
+  {
+    const url = `${this.taskUrl}/reasignar`
+    return this.http.put<any>(url, task)
+  }
+
 }

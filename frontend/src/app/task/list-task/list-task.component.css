@@ -1,225 +1,44 @@
-.accordion_display{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .accordion_size{
-      min-width: 150px;
-      max-width: 500px;
-      width: 100%;
-  }
-  
-  mat-form-field {
-    margin-right: 12px;
-  }
-  
-  .spacer {
-    flex: 1 0 auto;
-  }
-  
-  .mat-icon {
-    padding-right:15px;
-  }
-  
-  .mat-icon:hover {
-    color: #FF0000;
-    cursor: pointer;
-    padding-right:15px;
-  }
-  
-  .btDone{
-    background-color: #3cb44b;
-    color: #FFFFFF
-  }
-  
-  .btInProgress{
-    background-color: #f58231;
-    color: #FFFFFF
-  }
-  
-  .btToDo{
-    background-color: #e6194b;
-    color: #FFFFFF
-  }
-  
-  .btSelectDone{
-    color: #3cb44b;
-  }
-  
-  .btSelectInProgress{
-    color: #f58231;
-  }
-  
-  .btSelectTodo{
-    color: #e6194b;
-  }
-  
-  .text_center{
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-  
-  .image_center{
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 450px;
-  }
-
-  
-
-
-
-
-  .app,
-.brand {
-  margin: 1em;
-  width: 10em;
-  height: 10em;
+.project-box{
+    background-color: #dbf6fd;
 }
-
-.app {
-  background-color: #1fa895;
-}
-
-.app--color-weight-example {
-  background-color: #136559;
-}
-
-.brand {
-  background-color: #df3b26;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-html {
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.618;
-}
-
-body {
-  padding: 60px;
-}
-
-.agile-board {
-  display: flex;
-  margin: 100px;
-}
-
-.agile-board__column {
-  display: flex;
-  flex-direction: column;
-  width: 33.3333333333%;
-  padding: 10px;
-}
-
-.agile-board__column-title {
-  margin-top: 0;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #dbdbdb;
-  font-size: 16px;
-  font-weight: 300;
-}
-
-.agile-board__issue-list {
-  flex-grow: 1;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: whitesmoke;
-}
-
-.issue {
-  display: block;
-  position: relative;
-  min-height: 90px;
-  padding: 1em;
-  padding-left: calc(1em + 19px);
-  border: 1px solid #c7c7c7;
-  background-color: white;
-  font-size: 14px;
-  cursor: move;
-}
-.issue:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 5px;
-  background-color: #b1dafb;
-}
-.issue:hover .issue__number {
-  color: #1f5ea8;
-  border-bottom-color: #1f5ea8;
-}
-.issue.is-resolved .issue__number {
-  text-decoration: line-through;
-}
-.issue + .issue {
-  border-top: 0;
-}
-
-.issue__type {
-  position: absolute;
-  left: 1em;
-  top: 18px;
-}
-
-.issue__priority {
-  position: absolute;
-  left: 1em;
-  top: calc(1em + 25px);
-}
-
-.issue__number,
-.issue__title {
-  margin-top: 0;
-  margin-right: calc(1em + 32px + 5px);
-  margin-bottom: 0;
-}
-
-.issue__number {
-  border-bottom: 1px solid transparent;
-  color: black;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: all 150ms ease-in;
-}
-
-.issue__assignee {
-  position: absolute;
-  right: 1em;
-  height: 32px;
-  width: 32px;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.issue__estimate {
-  position: absolute;
-  right: 1em;
-  bottom: 1em;
-  min-height: 1.618em;
-  min-width: 2em;
-  padding-right: 0.5em;
-  padding-left: 0.5em;
-  background-color: #dbdbdb;
-  border-radius: 999em;
-  font-size: 11px;
-  text-align: center;
-}
-
-.issue--bug:before {
-  background-color: #fa5021;
-}
-
-.issue--improvement:before {
-  background-color: #4caf58;
-}
-
+.gg-toolbox {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 22px;
+    height: 16px;
+    border: 2px solid;
+    border-radius: 2px
+   }
+   
+   .gg-toolbox::after,
+   .gg-toolbox::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute
+   }
+   
+   .gg-toolbox::before {
+    border: 2px solid;
+    border-bottom: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    left: 4px;
+    width: 10px;
+    height: 4px;
+    top: -5px
+   }
+   
+   .gg-toolbox::after {
+    width: 18px;
+    height: 2px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    box-shadow:
+    0 -2px 0,
+    inset 4px 0 0,
+    inset -4px 0 0;
+    top: 4px
+   } 

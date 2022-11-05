@@ -1,68 +1,82 @@
-<div class="container">
-    <div class ="infotask">
-        <a>
-            <span>{{userid}}</span>
-            <br>
-            <span>{{tarea.nombre}}</span>
-            <br>
-            <span>{{tarea.descripcion}}</span>
-            <br>
-        </a>
-        <div class="subtask">
-            <ul class='agile-board__issue-list'> 
-                <li class='issue'>
-                    <i class='issue__type fa fa-check-square-o'></i>
-                    <i class='issue__priority fa fa-angle-up'></i>
-                    <div class='issue__assignee'>
-                      <img src='http://placekitten.com/g/48/48'>
-                    </div>
-                    <div class='issue__estimate'>12</div>
-                    <a class='issue__number' href='#'>ZUI-1328</a>
-                    <p class='issue__title'>Document utility class usage and best practices</p>
-                  </li>
-                  <li class='issue'>
-                    <i class='issue__type fa fa-check-square-o'></i>
-                    <i class='issue__priority fa fa-angle-up'></i>
-                    <div class='issue__assignee'>
-                      <img src='http://placekitten.com/g/48/48'>
-                    </div>
-                    <div class='issue__estimate'>12</div>
-                    <a class='issue__number' href='#'>ZUI-1328</a>
-                    <p class='issue__title'>Document utility class usage and best practices</p>
-                  </li>
-                  <li class='issue'>
-                    <i class='issue__type fa fa-check-square-o'></i>
-                    <i class='issue__priority fa fa-angle-up'></i>
-                    <div class='issue__assignee'>
-                      <img src='http://placekitten.com/g/48/48'>
-                    </div>
-                    <div class='issue__estimate'>12</div>
-                    <a class='issue__number' href='#'>ZUI-1328</a>
-                    <p class='issue__title'>Document utility class usage and best practices</p>
-                  </li>
-                  
-              </ul>
-        </div>
-    </div>
-    <div class="datosinfo">
-        <span>Detalles</span><br>
-        <span>Responsable  {{ownerNombre}}</span><br>
-        <span>Correo Responsable    {{ownerCorreo}} <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        <mat-menu #menu="matMenu">
-        <a *ngFor="let item of flujo"><button class="btSelectTodo" mat-menu-item (click)="changeStatus(tarea, item.id, $event)">{{item.nombre}}</button></a>
-        </mat-menu></span><br>
-        <span>Fecha inicio  {{tarea.fechainicio}}</span><br>
-        <span>Fecha Fin  {{tarea.fechafin}}</span><br>
-        <span>Detalles</span><br>
-        <div class="example-button-container">
-          <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon" routerLink="editTask" [mat-dialog-close]=valor (click)="close()">
-            <a ></a>
-            <mat-icon>filter_list</mat-icon>
-          </button>
-        </div>
-    </div>
 
-    
+
+<div class="app-container">
+
+  <div class="app-content">
+    <app-sidebar></app-sidebar>
+    <div class="projects-section">
+      <div class="projects-section-header">
+        <p>Tareas</p>
+        <p class="time"></p>
+      </div>
+      <div class="projects-section-line">
+        <div class="projects-status">
+          <div class="item-status">
+            <span class="status-number">{{myTasks.length}}</span>
+            <span class="status-type">Asignadas a mi</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-boxes jsGridView"  name="asd">
+        <div>
+            <ejs-gantt height="600px" width="1080px"
+                [dataSource]="data"
+                [taskFields]="taskSettings"
+                [columns]="columnSettings">
+            </ejs-gantt>
+            </div>
+        <div class="project-box-wrapper">
+        </div>
+      </div>
+    </div>
+    <div class="messages-section">
+        <button class="messages-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="15" y1="9" x2="9" y2="15" />
+            <line x1="9" y1="9" x2="15" y2="15" />
+          </svg>
+        </button>
+        <div class="projects-section-header">
+          <p>Tareas asignadas</p>
+        </div>
+        <div class="messages" *ngFor="let element of myTasks; let i = index">
+          <div class="message-box" *ngIf="element.Rechaza == 0">
+            <div class="message-content">
+              <div class="message-header">
+                <div class="name">{{element.Orden}} {{element.TaskName}}</div>
+                <div class="star-checkbox">
+                  <input type="checkbox" id="star-1">
+                  <label for="star-1">
+                    <i class="gg-debug"></i>
+                  </label>
+                </div>
+              </div>
+              <p class="message-line">
+                <a class="button-row" *ngIf="element.Acepta == 0; else templateName">
+                    <mat-button-toggle-group [(ngModel)]="element.Acepta">
+                    <button mat-raised-button  color="primary"  (click)="actuAceptRecha(element,0, 1)">Aceptar Tarea</button>
+                    <button mat-raised-button  color="warn" (click)="actuAceptRecha(element,1, 1)">Rechazar Tarea</button>
+                </mat-button-toggle-group>
+                </a>
+                <ng-template #templateName>
+                    <p class="message-line">
+                        <mat-slider color="primary"
+                            thumbLabel
+                            [(ngModel)] = "element.Avance"
+                            tickInterval="1000"
+                            step="1"
+                            min=0
+                            max="100"
+                            aria-label="units">
+                        </mat-slider>
+                        <button mat-raised-button [disabled]="false" color="primary" (click)="actualizar(element)">Actualizar</button>
+                      </p>
+                </ng-template>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>

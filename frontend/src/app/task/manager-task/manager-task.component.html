@@ -1,0 +1,98 @@
+
+<div class="app-container">
+    <div class="app-content">
+        <app-sidebar></app-sidebar>
+        <div class="projects-section">
+          <div class="projects-section-header">
+            <p>Rechazo de Tareas</p>
+            <p class="time"> </p>
+          </div>
+          <div class="projects-section-line">
+            <div class="projects-status">
+              <div class="item-status">
+                <span class="status-number">{{flujosRechazadas.length}} </span>
+                <span class="status-type">Flujos</span>
+              </div>
+              <div class="item-status">
+                <span class="status-number">{{tareasRechazadas.length}} </span>
+                <span class="status-type">Tareas</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="project-boxes jsGridView"  name="asd">
+            
+            <mat-tab-group mat-align-tabs="center" class="label">
+              
+              <mat-tab *ngFor="let flujo of flujosRechazadas; let i= index" label= "Flujo# {{flujo.flujoID}}">
+                
+
+                <table mat-table [dataSource]="filtrarTarea(flujo.flujoID)" class="mat-elevation-z8">
+
+                  <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+                
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="flujoID">
+                    <th mat-header-cell *matHeaderCellDef> Flujo </th>
+                    <td mat-cell *matCellDef="let element"> {{flujo.flujoName}} </td>
+                  </ng-container>
+                
+                  <!-- Nombre Column -->
+                  <ng-container matColumnDef="Nombre">
+                    <th mat-header-cell *matHeaderCellDef> Tarea </th>
+                    <td mat-cell *matCellDef="let element"> {{element.taskName}} </td>
+                  </ng-container>
+                
+                  <!-- Antiguo Responsable -->
+                  <ng-container matColumnDef="Rechazo Tarea">
+                    <th mat-header-cell *matHeaderCellDef> Rechazo Tarea </th>
+                    <td mat-cell *matCellDef="let element"> {{flujo.Responsable}} </td>
+                  </ng-container>
+                
+                  <!-- Nuevo Responsable -->
+                  <ng-container matColumnDef="Nuevo Responsable">
+                    <th mat-header-cell *matHeaderCellDef> Nuevo Responsable </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <mat-form-field appearance="fill" class="prueba">                
+                      <mat-select  placeholder="Responsable">
+                          <mat-option *ngFor="let respon of responsable; let i = index" [value]="respon.NOMBRE" (click)="asignarResponsable(element, respon.ID)">
+                            <span *ngIf="element.usuarioID == respon.ID;else responsable" >
+                              <p ><strong>{{respon.NOMBRE}} {{respon.APELLIDOP}}</strong></p>
+                            </span >
+                              
+                             <ng-template #responsable>
+                              <p >{{respon.NOMBRE}} {{respon.APELLIDOP}}</p>
+                              
+                            </ng-template>
+                          </mat-option>
+                      </mat-select>
+                  </mat-form-field> </td>
+                  </ng-container>
+                  <!-- Guardar -->
+                  <ng-container matColumnDef="Guardar">
+                    <th mat-header-cell *matHeaderCellDef> Guardar </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <section>
+                          <button mat-raised-button color="primary" (click)="reasignarTarea(element)">Guardar</button>
+                      </section>
+                    </td>
+                  </ng-container>
+                
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                
+
+
+                  
+                  
+                
+              </mat-tab>
+              
+            </mat-tab-group>
+
+          </div>
+        </div>
+    </div>
+  </div>
