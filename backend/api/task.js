@@ -10,6 +10,7 @@ router.get('/:id', auth, async (req, res) => {
     let idUser = req.user.id
     let taskFlujo = []
     let myTasks = []
+    let avance = 0
     try {
 
             const task = await db.sequelize.query(
@@ -64,8 +65,11 @@ router.get('/:id', auth, async (req, res) => {
                     }
                     taskFlujo[taskFlujo.length-1].subtasks.push(temp)
                     }
+                    avance = avance + element.AVANCE
+                 
             });
-            res.status(200).send({myTasks,taskFlujo})
+            avance = Math.round(avance / task[0].length)
+            res.status(200).send({myTasks,taskFlujo, avance})
 
 
     } catch (error) {
@@ -79,7 +83,7 @@ router.put('/', auth, async (req, res) => {
     let AVANCE = req.body.Avance
     let ACEPTA = req.body.Avance
     let RECHAZA = req.body.Rechaza
-    console.log(req.body)
+
     try {
         const taskDetalle = await db.task.findOne({ where: { ID: idTask} })
         if(!taskDetalle) return res.status(400).send('tarea no existe')
@@ -210,7 +214,7 @@ router.post('/:id', auth, async(req, res) => {
     let SUBTAREA =req.body[i].TAREA.DE_SUBTAREA;
     let ETIQUETA_ID =1;
     let USUARIO_ID =req.body[i].RESPONSABLE;
-    console.log(req.body);
+   
     let FECHA = Date()
          tarea= await db.task.create({ 
             ORDEN,     
@@ -284,7 +288,7 @@ router.post('/:id', auth, async(req, res) => {
 
 //REASIGTAR TAREA
 router.put('/reasignar', auth, async(req, res) => {
-    console.log("Aca")
+   
     let USUARIO_ID = req.body.usuarioID;
     let TAREA_ID =req.body.taskID
     let ACEPTA = 0

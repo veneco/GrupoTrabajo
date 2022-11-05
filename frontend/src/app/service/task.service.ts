@@ -76,6 +76,11 @@ export class TaskService {
     return this.http.get<any>(url)
   }
 
+  setFlujo(flujo:any){
+    const url = `${this.flujoIN}/cerrar`
+    return this.http.put<any>(url, {flujo})
+  }
+
   getGrupo(){
     return this.http.get<any>(this.grupo)
   }

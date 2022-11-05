@@ -82,4 +82,31 @@ router.post('/', auth, async(req, res) => {
 
     });
 
+    //CERRAR FLUJO
+router.put('/cerrar',auth, async (req, res) => {
+    console.log(req.body)
+    let flujoID = req.body.flujo;
+    try {
+        const flujo = await db.flujo.findOne({ where: { ID: flujoID} })
+        if(!flujo) return res.status(400).send('tarea no existe')
+        const updateFlujo = await db.flujo.update(
+            {
+                DELETED: 1,
+            },
+            {where:{ID: flujoID}
+        })
+        const updateTareas = await db.task.update(
+            {
+                DELETED: 1,
+            },
+            {where:{FLUJO_IN_ID: flujoID}
+        })
+      
+        res.status(200).send(updateTareas)
+    } catch (error) {
+        res.status(400).send('no se pudo crear el usuario por '+ error)
+    }
+
+});
+
 module.exports = router;

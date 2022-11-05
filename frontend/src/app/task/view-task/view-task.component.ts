@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from 'src/app/service/task.service';
+import { Router } from '@angular/router'
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -7,19 +8,21 @@ import { TaskService } from 'src/app/service/task.service';
 })
 export class ViewTaskComponent implements OnInit {
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService,
+    private router: Router) { }
   idTask = localStorage.getItem('flujo')
   public data: object[] = [];
   public myTasks:any = [];
   prueba:boolean = true
-
-  
+  avance:any
+  rol:any = localStorage.getItem('rol')
+  flujo:any = localStorage.getItem('flujo')
   ngOnInit(): void {
     //LLAMA A LAS TAREAS PARA EL USUARIO ACTUAL LOGEADO
     this.taskService.getTask(this.idTask)
       .subscribe(
         res=>{
-
+          this.avance = res.avance
           this.data = res.taskFlujo
           this.myTasks = res.myTasks   
           console.log(this.myTasks)     
@@ -74,6 +77,22 @@ export class ViewTaskComponent implements OnInit {
         }     
       )
   }
+
+//CERRAR FLUJO INSTANCIADO
+
+cerrarFlujo()
+{
+  this.taskService.setFlujo(this.flujo)
+      .subscribe(
+        res=>{ 
+          console.log(res)
+          this.router.navigate(['/tasks'])
+        },  
+        err=>{
+          console.log(err) 
+        }     
+      )
+}
 //ACTUALIZAR ESTADO DE LA TAREA YA SEA SI LA ACEPTO O LA RACHAZO
   actuAceptRecha(task:any, opcional:any, AcepRacha:any){
     if(opcional==0)

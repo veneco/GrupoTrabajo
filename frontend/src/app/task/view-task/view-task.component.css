@@ -3,7 +3,8 @@ mat-slider {
     
   }
 .button-row button,
-.button-row a {
+.button-row a,
+.bar {
   margin-right: 8px;
 }
  .gg-debug {

@@ -14,9 +14,14 @@
           <div class="item-status">
             <span class="status-number">{{myTasks.length}}</span>
             <span class="status-type">Asignadas a mi</span>
-          </div>
+          </div>         
         </div>
-      </div>
+        
+        <span class="status-type">Avance </span>
+        <mat-progress-bar class="bar" mode="determinate" value={{avance}}></mat-progress-bar>
+        <span class="status-type"><strong>{{avance}}% </strong></span>
+        <span *ngIf="avance == 100 && rol== 5"><button mat-raised-button  color="primary" (click)="cerrarFlujo()">Cerrar Tarea</button></span>
+      </div>     
       <div class="project-boxes jsGridView"  name="asd">
         <div>
             <ejs-gantt height="600px" width="1080px"
