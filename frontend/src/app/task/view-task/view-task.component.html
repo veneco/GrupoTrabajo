@@ -20,7 +20,7 @@
         <span class="status-type">Avance </span>
         <mat-progress-bar class="bar" mode="determinate" value={{avance}}></mat-progress-bar>
         <span class="status-type"><strong>{{avance}}% </strong></span>
-        <span *ngIf="avance == 100 && rol== 5"><button mat-raised-button  color="primary" (click)="cerrarFlujo()">Cerrar Tarea</button></span>
+        <span *ngIf="avance == 100 && rol== 5"><button mat-raised-button  color="primary" (click)="openDialogCerrarFlujo()">Terminar Flujo</button></span>
       </div>     
       <div class="project-boxes jsGridView"  name="asd">
         <div>
@@ -64,7 +64,7 @@
                 <a class="button-row" *ngIf="element.Acepta == 0; else templateName">
                     <mat-button-toggle-group [(ngModel)]="element.Acepta">
                     <button mat-raised-button  color="primary"  (click)="actuAceptRecha(element,0, 1)">Aceptar Tarea</button>
-                    <button mat-raised-button  color="warn" (click)="actuAceptRecha(element,1, 1)">Rechazar Tarea</button>
+                    <button mat-raised-button  color="warn" (click)="openDialogRechazarTarea(element,1, 1)">Rechazar Tarea</button>
                 </mat-button-toggle-group>
                 </a>
                 <ng-template #templateName>

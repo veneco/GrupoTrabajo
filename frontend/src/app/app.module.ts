@@ -37,6 +37,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,8 @@ import {MatListModule} from '@angular/material/list';
     ViewTaskComponent,
     ManagerTaskComponent,
     SidebarComponent,
-
+    ConfirmDialogComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -73,9 +76,11 @@ import {MatListModule} from '@angular/material/list';
     MatButtonToggleModule,
     MatTabsModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule
     
   ],
+  entryComponents:[ConfirmDialogComponent],
   providers: [AuthService, AuthGuard,CargarScriptsService, TokenInterceptorService,{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

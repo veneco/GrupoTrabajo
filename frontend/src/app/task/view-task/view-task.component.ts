@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-
+import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-view-task',
@@ -15,8 +15,11 @@ import {
 })
 export class ViewTaskComponent implements OnInit {
 
-  constructor(private taskService: TaskService,
-    private router: Router) { }
+  constructor(
+    private taskService: TaskService,
+    private router: Router,
+    public dialog: MatDialog) { }
+
   idTask = localStorage.getItem('flujo')
   public data: any[] = [];
   public myTasks:any = [];
@@ -103,7 +106,6 @@ cerrarFlujo()
   this.taskService.setFlujo(this.flujo)
       .subscribe(
         res=>{ 
-          console.log(res)
           this.router.navigate(['/tasks'])
         },  
         err=>{
@@ -117,7 +119,6 @@ cerrarFlujo()
       task.Acepta = AcepRacha
     if(opcional==1)
       task.Rechaza = AcepRacha
-    console.log(task)
     this.taskService.setTaskEstado(task)
       .subscribe(
         res=>{ 
@@ -128,6 +129,30 @@ cerrarFlujo()
           console.log(err) 
         }     
       )
+  }
+  openDialogCerrarFlujo():void{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+      width:'350px',
+      data:'Seguro que desea terminar el flujo?'
+    });
+    dialogRef.afterClosed().subscribe(
+      res=>{ 
+        if(res){
+          this.cerrarFlujo()
+        }
+      });
+  }
+  openDialogRechazarTarea(task:any, opcional:any, AcepRacha:any):void{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+      width:'350px',
+      data:'Seguro que desea rechazar la tarea?'
+    });
+    dialogRef.afterClosed().subscribe(
+      res=>{ 
+        if(res){
+          this.actuAceptRecha(task,opcional,AcepRacha)
+        }
+      });
   }
 
 }
