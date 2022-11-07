@@ -40,23 +40,24 @@ router.get('/:id', auth, async (req, res) => {
                     temp = 
                     {
                         TaskID: (element.ORDEN+1),
-                        TaskName: element.NOMBRE,
-                        StartDate: element.FECHAINICIO,
-                        EndDate: element.FECHAFIN,
+                        TaskName:element.NOMBRE,
+                        StartDate: element.FECHAINICIO.toISOString().substring(0, element.FECHAINICIO.toISOString().length - 1),
+                        EndDate: element.FECHAFIN.toISOString().substring(0, element.FECHAFIN.toISOString().length - 1),
                         Responsable: element.RESPONSABLE,
                         Predecessors: element.PREDECEDORA,
                         Progress: element.AVANCE,
                         Duration: element.DURACION,
                         subtasks: []
                     }
+                    console.log(element.PREDECEDORA)
                     taskFlujo.push(temp)
                     }
                     else{
                         temp =  {
                             TaskID: (element.ORDEN+1),
-                            TaskName: element.NOMBRE,
-                            StartDate: element.FECHAINICIO,
-                            EndDate: element.FECHAFIN,
+                            TaskName: ".   "+element.NOMBRE,
+                            StartDate: element.FECHAINICIO.toISOString().substring(0, element.FECHAINICIO.toISOString().length - 1),
+                            EndDate: element.FECHAFIN.toISOString().substring(0, element.FECHAFIN.toISOString().length - 1),
                             Predecessors: element.PREDECEDORA,
                             Responsable: element.RESPONSABLE,
                             Progress: element.AVANCE,
@@ -147,7 +148,7 @@ router.post('/not', auth, async (req, res) => {
                 " ON B.FLUJO_IN_ID = C.IDFLUJO"+
                 " LEFT JOIN (SELECT  ID AS IDUSUARIO, NOMBRE || ' ' || APELLIDOP AS RESPONSABLE FROM USUARIO ) D"+
                 " ON A.USUARIO_ID = D.IDUSUARIO"+
-                " where A.ACEPTA = 0 AND A.RECHAZA = 1  AND A.REASIGNADA = 0 AND C.GRUPO = "+ grupo +" ORDER BY FECHA ASC;") 
+                " where A.ACEPTA = 0 AND A.RECHAZA = 1  AND A.REASIGNADA = 0 AND C.GRUPO = "+ grupo +" ORDER BY FECHA DESC;") 
         }           
             if(!notificaciones) return res.status(200).send('Usuario no tiene notificaciones')
             let index = -1
@@ -163,7 +164,7 @@ router.post('/not', auth, async (req, res) => {
                         flujoName: element.NOMBREFLUJO,
                         flujoID: element.IDFLUJO,
                         Responsable: element.RESPONSABLE,
-                        fecha: element.FECHA, 
+                        fecha: element.FECHA.toISOString().split('T')[0], 
                         tareas: []
                     }                 
                     envioNoti.push(temp)

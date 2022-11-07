@@ -22,12 +22,13 @@ export class ListTaskComponent implements OnInit {
     ) { 
      
     }
-
+    ColorSemaforo:any = true
     mili = 24*60*60*1000
     datetoday:any = new Date()
     tasks:any = []
     flujosInstanciado:any = []
     datos:any =[]
+    retrasado:any = 0
     notificaciones:any =[]
     rol:any = localStorage.getItem('rol')
 
@@ -39,15 +40,10 @@ export class ListTaskComponent implements OnInit {
           let tempFlujo = res.flujo[0]
           console.log(tempFlujo)
           this.datos = res.userData
-          let tempAvance
           for (let i = 0; i < tempFlujo.length; i++) {
             tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
-            
-            tempAvance = new Date(tempFlujo[i].FECHAINICIO)
-            let finalTemp = Math.abs(tempAvance.getTime()-new Date().getTime())
-            let avan = Math.round(finalTemp/this.mili)
-            console.log(avan+" "+ tempFlujo[i].NOMBRE)
-            this.flujosInstanciado.push(tempFlujo[i])           
+            this.flujosInstanciado.push(tempFlujo[i])
+                       
           }          
         },  
         err=>{
@@ -57,8 +53,7 @@ export class ListTaskComponent implements OnInit {
       this.taskService.getNoti()
       .subscribe(
         res=>{
-          this.notificaciones = res
-          console.log(this.notificaciones)    
+          this.notificaciones = res 
         },  
         err=>{
           console.log(err) 
@@ -78,7 +73,20 @@ export class ListTaskComponent implements OnInit {
     return fecha.toISOString().split('T')[0]
 
   }
-
+  semaforo(fecha:Date)
+  {
+    let fecha1 = new Date(fecha)
+    let fecha2 = new Date()
+    let resta = fecha1.getTime() - fecha2.getTime()
+    let total:any = Math.round(resta/ (1000*60*60*24))
+    if(total < 0){
+      this.ColorSemaforo =0
+      this.retrasado++
+     }
+    if(total < 3 && total > 0){this.ColorSemaforo =1}
+    if(total > 2){this.ColorSemaforo =2}
+    return parseInt(total) 
+  }
   delete(deleteTask:any){
     this.taskService.deleteTask(deleteTask)
       .subscribe(

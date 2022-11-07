@@ -27,7 +27,10 @@
             <ejs-gantt height="600px" width="1080px"
                 [dataSource]="data"
                 [taskFields]="taskSettings"
-                [columns]="columnSettings">
+                [columns]="columnSettings"
+                [timelineSettings]="timelineSettings" timezone="IST"
+                [includeWeekend]="true"
+                [dayWorkingTime]="dayWorkingTime">
             </ejs-gantt>
             </div>
         <div class="project-box-wrapper">

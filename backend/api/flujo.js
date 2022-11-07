@@ -15,14 +15,14 @@ router.get('/list',auth, async (req, res) => {
     try {
         if(rol==5){
             flujo = await db.sequelize.query(
-                "select * from flujo_in A LEFT JOIN (SELECT  tarea.FLUJO_IN_ID, round(SUM(avance)/COUNT(avance)) AS AVANCETOTAL"+
+                "select * from flujo_in A LEFT JOIN (SELECT  tarea.FLUJO_IN_ID, round(SUM(avance)/COUNT(avance)) AS AVANCETOTAL, MAX(FECHAFIN) AS FECHAFIN"+
                 " FROM tarea where deleted = 0 GROUP BY flujo_in_id) B ON A.id = B.FLUJO_IN_ID JOIN(select FLUJO_IN_ID  from tarea C "+
                 " LEFT JOIN (SELECT  USUARIO_ID, TAREA_ID FROM detalletarea ) E ON C.id = E.TAREA_ID " +
                 " GROUP BY C.FLUJO_IN_ID)D ON A.ID = D.FLUJO_IN_ID WHERE A.DELETED = 0 AND A.GRUPOTRABAJO_ID = "+grupoTrabajo+ "ORDER BY A.ID DESC")  
         }
         else{
             flujo = await db.sequelize.query(
-                "select * from flujo_in A LEFT JOIN (SELECT  tarea.FLUJO_IN_ID, round(SUM(avance)/COUNT(avance)) AS AVANCETOTAL"+
+                "select * from flujo_in A LEFT JOIN (SELECT  tarea.FLUJO_IN_ID, round(SUM(avance)/COUNT(avance)) AS AVANCETOTAL, MAX(FECHAFIN) AS FECHAFIN"+
                 " FROM tarea where deleted = 0 GROUP BY flujo_in_id) B ON A.id = B.FLUJO_IN_ID JOIN(select FLUJO_IN_ID  from tarea C "+
                 " LEFT JOIN (SELECT  USUARIO_ID, TAREA_ID FROM detalletarea ) E ON C.id = E.TAREA_ID where USUARIO_ID = "+id +
                 " GROUP BY C.FLUJO_IN_ID)D ON A.ID = D.FLUJO_IN_ID WHERE A.DELETED = 0 AND A.GRUPOTRABAJO_ID = "+grupoTrabajo+ "ORDER BY A.ID DESC")  

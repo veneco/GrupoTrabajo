@@ -42,3 +42,16 @@
     inset -4px 0 0;
     top: 4px
    } 
+   .green{
+    color: green
+   } 
+   .yellow{
+    color: rgb(211, 211, 32)
+   }
+   .red{
+    color: red
+    
+   }
+   .elementID{
+    color: #000000;
+   }

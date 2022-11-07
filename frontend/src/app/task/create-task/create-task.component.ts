@@ -8,6 +8,7 @@ import { Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { DatePipe } from '@angular/common';
+import { EMPTY, empty, Observable } from 'rxjs';
 
 const moment =  _moment;
 @Component({
@@ -77,7 +78,7 @@ export class CreateTaskComponent implements OnInit {
 
   }
  prueba(flujo:any, index:any ){
-    //console.log(this.tarea[index])
+
     this.dataSource = this.tarea[index]
     this.snackBar.open(flujo.DESCRIPCION, "Cerrar", {
       duration: 20000
@@ -91,24 +92,37 @@ export class CreateTaskComponent implements OnInit {
     
     let fecha = new Date(date) 
     fecha.setDate(fecha.getDate() + duracion);
-    let datePipe: DatePipe = new DatePipe('en-US');
     return fecha.toISOString().substring(0, fecha.toISOString().length - 1)
     
 
   }
 //CREAR UNA FLUJO
   create(){
-    //console.log(this.createTask, this.dataSource)       
-    this.taskService.createFlujo(this.createTask)
+    let pendiente = true
+    for (let index = 0; index < this.dataSource.length; index++) {
+      console.log(index)
+      if(this.usuario[index] == undefined)
+        pendiente = false
+    }
+    if(this.usuario.length == this.dataSource.length && pendiente == true && this.createTask.fechainicio != null && this.createTask.descripcion != null)
+    { 
+
+      this.taskService.createFlujo(this.createTask)
       .subscribe(
         res => {
-          console.log(res)
           this.createTarea(res.ID)
         },
         err => {
           console.log(err)
-        },
+        }
       )
+    }else{
+      this.snackBar.open("Para poder Instanciar un Flujo se deben completar todos los campos", "Cerrar", {
+        duration: 3000
+      })
+
+    }
+
       
   }
 

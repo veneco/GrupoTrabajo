@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from 'src/app/service/task.service';
 import { Router } from '@angular/router'
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+
+
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -11,8 +18,11 @@ export class ViewTaskComponent implements OnInit {
   constructor(private taskService: TaskService,
     private router: Router) { }
   idTask = localStorage.getItem('flujo')
-  public data: object[] = [];
+  public data: any[] = [];
   public myTasks:any = [];
+  public timezoneValue: string = 'UTC';
+  public dayWorkingTime: object[]  = [{ from: 9, to: 18 }];
+  temp:any[] = []
   prueba:boolean = true
   avance:any
   rol:any = localStorage.getItem('rol')
@@ -22,16 +32,21 @@ export class ViewTaskComponent implements OnInit {
     this.taskService.getTask(this.idTask)
       .subscribe(
         res=>{
+          
           this.avance = res.avance
           this.data = res.taskFlujo
-          this.myTasks = res.myTasks   
-          console.log(this.myTasks)     
+          this.myTasks = res.myTasks
+          console.log(this.data)  
+          
+          
         },  
         err=>{
           console.log(err) 
         }     
       )
+      
   }
+  
    public toolbarOptions: string[] = ['Add'];
   public resourceFields: object = {
     id: "resourceId",
@@ -46,8 +61,9 @@ export class ViewTaskComponent implements OnInit {
     {field: "TaskName", headerText: "Nombre"},
     {field: "Responsable", headerText: "Responsable"},
     {field: "Duration", headerText: "Duracion"},
-    {field: "StartDate", headerText: "Fecha Inicio"},
-    { field: 'EndDate', headerText: "Fechafin"},
+    {field: "StartDate", headerText: "Fecha Inicio", format:"dd-MMM-yy"},
+    { field: 'EndDate', headerText: "Fechafin", format:"dd-MMM-yy"},
+    
    
   ]
   public taskSettings: object = {
@@ -59,8 +75,10 @@ export class ViewTaskComponent implements OnInit {
     progress: "Progress",
     child: "subtasks",
     dependency: "Predecessors",
-    resourceInfo: "resources",
     Responsable: "Responsable"
+  }
+  public timelineSettings = {
+
   }
 
 //ACTUALIZAR ESTADO  SI EL PORCENTAJE DE AVANCE DE LA TAREA INCREMENTO
@@ -111,4 +129,6 @@ cerrarFlujo()
         }     
       )
   }
+
 }
+
