@@ -4,7 +4,7 @@ import { Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskService } from 'src/app/service/task.service';
 import { CargarScriptsService } from 'src/app/service/cargarJs/cargar-scripts.service';
-
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-list-task',
@@ -18,18 +18,19 @@ export class ListTaskComponent implements OnInit {
   constructor(private taskService: TaskService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private _CargarScripts:CargarScriptsService
+    private _CargarScripts:CargarScriptsService,
+    public authService: AuthService
     ) { 
      
     }
     ColorSemaforo:any = true
-    mili = 24*60*60*1000
     datetoday:any = new Date()
     tasks:any = []
     flujosInstanciado:any = []
     datos:any =[]
     retrasado:any = 0
     notificaciones:any =[]
+    total:any
     rol:any = localStorage.getItem('rol')
 
     
@@ -38,13 +39,15 @@ export class ListTaskComponent implements OnInit {
       .subscribe(
         res=>{
           let tempFlujo = res.flujo[0]
-          console.log(tempFlujo)
+          
           this.datos = res.userData
           for (let i = 0; i < tempFlujo.length; i++) {
+            tempFlujo[i].FECHAFIN = this.formatDate(tempFlujo[i].FECHAFIN)
             tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
             this.flujosInstanciado.push(tempFlujo[i])
                        
-          }          
+          }
+          console.log(this.flujosInstanciado)          
         },  
         err=>{
           console.log(err) 
@@ -73,19 +76,33 @@ export class ListTaskComponent implements OnInit {
     return fecha.toISOString().split('T')[0]
 
   }
-  semaforo(fecha:Date)
+
+  //COLOR Y CALCULO DE NUMERO DEL SEMAFORO
+  semaforo(fecha:Date, final:any=0)
   {
     let fecha1 = new Date(fecha)
     let fecha2 = new Date()
     let resta = fecha1.getTime() - fecha2.getTime()
-    let total:any = Math.round(resta/ (1000*60*60*24))
-    if(total < 0){
-      this.ColorSemaforo =0
-      this.retrasado++
-     }
-    if(total < 3 && total > 0){this.ColorSemaforo =1}
-    if(total > 2){this.ColorSemaforo =2}
-    return parseInt(total) 
+    this.total = Math.round(resta/ (1000*60*60*24))
+    if(this.total < 0){this.ColorSemaforo =0}
+    if(this.total < 8 && this.total > -1){this.ColorSemaforo =1}
+    if(this.total > 7){this.ColorSemaforo =2}
+    return parseInt(this.total) 
+  }
+
+  //CALCULO DE LA BARRA DE AVANCE POR FECHA
+  avancePorFecha(flujo:any)
+  { 
+    let fechaInit = new Date(flujo.FECHAINICIO)
+    let fechaFin = new Date(flujo.FECHAFIN)
+    let fechaHoy = new Date()
+    let diasTotalMili = fechaFin.getTime() - fechaInit.getTime()
+    let diasAvanceMili = fechaHoy.getTime() - fechaInit.getTime() 
+    let diasTotal = Math.round(diasTotalMili/ (1000*60*60*24))
+    let diasAvance = Math.round(diasAvanceMili/ (1000*60*60*24))
+    let totalAvance = Math.round((diasAvance * 100 )/ diasTotal)
+    //console.log(flujo.ID+" "+ diasTotal + " " + diasAvance +" "+ totalAvance)
+    return totalAvance
   }
   delete(deleteTask:any){
     this.taskService.deleteTask(deleteTask)

@@ -1,8 +1,9 @@
 const db = require ("../models");
 const express = require('express');
 const { Sequelize } = require("../models");
-const router = express.Router();
+
 const auth = require('../middleware/auth')
+const router = express.Router();
 
 //LLAMAR PRIORIDAD
 router.get('/list', auth, async (req, res) => {

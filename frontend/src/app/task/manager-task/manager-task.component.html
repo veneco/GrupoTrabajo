@@ -4,24 +4,29 @@
         <app-sidebar></app-sidebar>
         <div class="projects-section">
           <div class="projects-section-header">
-            <p>Rechazo de Tareas</p>
+            <p>Control de Tareas</p>
             <p class="time"> </p>
           </div>
           <div class="projects-section-line">
             <div class="projects-status">
               <div class="item-status">
                 <span class="status-number">{{flujosRechazadas.length}} </span>
-                <span class="status-type">Flujos</span>
+                <span class="status-type" >Flujos</span>
               </div>
               <div class="item-status">
                 <span class="status-number">{{tareasRechazadas.length}} </span>
                 <span class="status-type">Tareas</span>
               </div>
+              <div class="item-status">
+                <span class="status-number">{{bugReportado.length}} </span>
+                <span class="status-type">Bug</span>
+              </div>
             </div>
-
+            
           </div>
           <div class="project-boxes jsGridView"  name="asd">
-            
+            <mat-tab-group mat-align-tabs="center" class="label">
+              <mat-tab label="Tareas rechazadas">
             <mat-tab-group mat-align-tabs="center" class="label">
               
               <mat-tab *ngFor="let flujo of flujosRechazadas; let i= index" label= "Flujo# {{flujo.flujoID}}">
@@ -48,6 +53,14 @@
                   <ng-container matColumnDef="Rechazo Tarea">
                     <th mat-header-cell *matHeaderCellDef> Rechazo Tarea </th>
                     <td mat-cell *matCellDef="let element"> {{flujo.Responsable}} </td>
+                  </ng-container>
+
+                  <!-- Comentario -->
+                  <ng-container matColumnDef="Comentario">
+                    <th mat-header-cell *matHeaderCellDef> Comentario </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <i class="gg-comment" 
+                      matTooltip={{element.Comentario}}> </i> </td>
                   </ng-container>
                 
                   <!-- Nuevo Responsable -->
@@ -91,8 +104,79 @@
               </mat-tab>
               
             </mat-tab-group>
+          </mat-tab>
+          <mat-tab label="Reporte Bugs">
+           
+              <table mat-table [dataSource]="bugReportado" class="mat-elevation-z8">
 
-          </div>
-        </div>
+                
+                <!-- BugID Column -->
+                <ng-container matColumnDef="BugID">
+                  <th mat-header-cell *matHeaderCellDef> ID Bug </th>
+                  <td mat-cell *matCellDef="let element"> {{element.BugID}} </td>
+                </ng-container>
+
+                 <!-- FlujoID Column -->
+                 <ng-container matColumnDef="FlujoID">
+                  <th mat-header-cell *matHeaderCellDef> ID Reporte </th>
+                  <td mat-cell *matCellDef="let element"> {{element.FlujoID}} </td>
+                </ng-container>
+              
+                <!-- FlujoID Column -->
+                <ng-container matColumnDef="TaskID">
+                  <th mat-header-cell *matHeaderCellDef> ID Tarea </th>
+                  <td mat-cell *matCellDef="let element"> {{element.TaskID}} </td>
+                </ng-container>
+
+                <!-- FlujoID Column -->
+                <ng-container matColumnDef="TaskName">
+                  <th mat-header-cell *matHeaderCellDef> Nombre Tarea </th>
+                  <td mat-cell *matCellDef="let element"> {{element.TaskName}} </td>
+                </ng-container>
+                <!-- Nombre Column -->
+                <ng-container matColumnDef="CreadoPor">
+                  <th mat-header-cell *matHeaderCellDef> Reportado </th>
+                  <td mat-cell *matCellDef="let element"> {{element.CreadoPor}} </td>
+                </ng-container>
+        
+                <!-- Rechazo Tarea Responsable -->
+                <ng-container matColumnDef="BugComentario">
+                  <th mat-header-cell *matHeaderCellDef> Comentario </th>
+                  <td mat-cell *matCellDef="let element"> <i class="gg-comment" 
+                    matTooltip={{element.BugComentario}}> </i>  </td>
+                </ng-container>
+
+                <!-- Accion a tomar -->
+                <ng-container matColumnDef="Accion">
+                  <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <mat-form-field appearance="fill" class="prueba">                
+                    <mat-select  [value]="estadoAccion[0].ID">
+                        <mat-option *ngFor="let accion of estadoAccion; let i = index" [value]="accion.ID" [disabled]="i == 0" (click)="asignarAccion(element, accion.ID)">
+                            <p >{{accion.NOMBRE}}</p>
+                            
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> </td>
+                </ng-container>
+              
+                <!-- Guardar -->
+                <ng-container matColumnDef="Resolver">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <section>
+                        <button mat-raised-button color="primary" (click)="setEstado(element)">Resolver</button>
+                    </section>
+                  </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="bugColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: bugColumns;"></tr>
+              </table>                 
+            
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
+</div>
+</div>

@@ -39,6 +39,9 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
+import { ErrorDialogComponent } from './components/shared/error-dialog/error-dialog.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { ActionDialogComponent } from './components/shared/action-dialog/action-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +53,8 @@ import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confi
     ManagerTaskComponent,
     SidebarComponent,
     ConfirmDialogComponent,
+    ErrorDialogComponent,
+    ActionDialogComponent,
     
   ],
   imports: [
@@ -77,10 +82,11 @@ import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confi
     MatTabsModule,
     MatDividerModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
     
   ],
-  entryComponents:[ConfirmDialogComponent],
+  entryComponents:[ConfirmDialogComponent, ErrorDialogComponent, ActionDialogComponent],
   providers: [AuthService, AuthGuard,CargarScriptsService, TokenInterceptorService,{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

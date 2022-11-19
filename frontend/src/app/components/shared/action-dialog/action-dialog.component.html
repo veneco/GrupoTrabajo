@@ -1,0 +1,19 @@
+<div class="center" mat-dialog-content>{{data}}</div>
+<div class="center" mat-dialog-content>
+    <mat-form-field appearance="fill" class="prueba">                
+        <mat-select  placeholder="Responsable">
+            <mat-option *ngFor="let respon of data.responsables; let i = index" [value]="respon.NOMBRE">
+
+                <p >{{respon.NOMBRE}} {{respon.APELLIDOP}}</p>
+                
+             
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    
+    
+    <button mat-button (click)="onClickNO()">Cerrar</button>
+    <button mat-button [mat-dialog-close]="true">Enviar</button>
+</div>

@@ -1,0 +1,12 @@
+<div class="center" mat-dialog-content>{{data}}</div>
+<div class="center" mat-dialog-content>
+    <mat-form-field appearance="fill">
+         <input matInput [(ngModel)]="comentario" placeholder="Escriba aqui...">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    
+    
+    <button mat-button (click)="onClickNO()">Cerrar</button>
+    <button mat-button [mat-dialog-close]="comentario">Enviar</button>
+</div>

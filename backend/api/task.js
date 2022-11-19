@@ -16,8 +16,8 @@ router.get('/:id', auth, async (req, res) => {
             const task = await db.sequelize.query(
                 "select * from tarea A LEFT JOIN (SELECT  USUARIO_ID, TAREA_ID, ACEPTA, RECHAZA, REASIGNADA FROM detalletarea ) B"+
                 " ON A.id = B.TAREA_ID LEFT JOIN (SELECT ID AS IDRESPONSABLE," +
-                    " nombre || ' ' || apellidop || ' ' || apellidom AS RESPONSABLE FROM usuario)C"+
-                    " ON B.USUARIO_ID = C.IDRESPONSABLE  WHERE FLUJO_IN_ID ="+ idtask+" AND B.REASIGNADA = 0 ORDER BY ORDEN") 
+                " nombre || ' ' || apellidop || ' ' || apellidom AS RESPONSABLE FROM usuario)C"+
+                " ON B.USUARIO_ID = C.IDRESPONSABLE  WHERE FLUJO_IN_ID ="+ idtask+" AND B.REASIGNADA = 0 ORDER BY ORDEN") 
             /*await db.task.findAll({ where: { FLUJO_IN_ID: idtask },
                 order: [['ORDEN', 'ASC']] })*/
             if(!task) return res.status(200).send('Usuario no tiene tareas')
@@ -49,7 +49,7 @@ router.get('/:id', auth, async (req, res) => {
                         Duration: element.DURACION,
                         subtasks: []
                     }
-                    console.log(element.PREDECEDORA)
+                   
                     taskFlujo.push(temp)
                     }
                     else{
@@ -102,17 +102,19 @@ router.put('/', auth, async (req, res) => {
     }
    
 });
-
+//MARCAR LA TAREA COMO ACEPTADA O RECHAZADA
 router.put('/acepRecha', auth, async (req, res) => {
-    let idTask = req.body.TaskID
-    let ACEPTA = req.body.Acepta
-    let RECHAZA = req.body.Rechaza
+    let idTask = req.body.task.TaskID
+    let ACEPTA = req.body.task.Acepta
+    let RECHAZA = req.body.task.Rechaza
+    let COMENTARIO = req.body.Comentario
     try {
         const taskDetalle = await db.detalleTask.findOne({ where: { TAREA_ID: idTask} })
         if(!taskDetalle) return res.status(400).send('tarea no existe')
         const update = await db.detalleTask.update(
             {ACEPTA: ACEPTA,
-            RECHAZA:RECHAZA},
+            RECHAZA:RECHAZA,
+            COMENTARIO:COMENTARIO},
             {where:{TAREA_ID: idTask}
         })
             res.status(200).send(update)
@@ -123,6 +125,7 @@ router.put('/acepRecha', auth, async (req, res) => {
     }
    
 });
+//NOTIFICACIONES
 router.post('/not', auth, async (req, res) => {
     let idUser = req.user.id
     let rol = req.user.rol
@@ -130,16 +133,7 @@ router.post('/not', auth, async (req, res) => {
     let envioNoti =[]
     let notificaciones = []
     try {    
-        if(rol == 4){
-            notificaciones = await db.sequelize.query(
-                "select * from detalletarea A"+
-                " LEFT JOIN (SELECT  ID AS IDTAREA, FLUJO_IN_ID, NOMBRE AS NOMBRETAREA FROM tarea ) B" +
-                " ON A.TAREA_ID = B.IDTAREA"+
-                " LEFT JOIN (SELECT  ID AS IDFLUJO, DESCRIPCION AS NOMBREFLUJO FROM FLUJO_IN ) C"+
-                " ON B.FLUJO_IN_ID = C.IDFLUJO"+
-                " where A.ACEPTA = 0 AND A.RECHAZA = 0 AND A.REASIGNADA = 0 AND A.USUARIO_ID = "+ idUser +" ORDER BY FECHA DESC;") 
-        }
-        else{
+        if(rol == 5){
             notificaciones = await db.sequelize.query(
                 "select * from detalletarea A"+
                 " LEFT JOIN (SELECT  ID AS IDTAREA, FLUJO_IN_ID, NOMBRE AS NOMBRETAREA FROM tarea ) B" +
@@ -148,7 +142,16 @@ router.post('/not', auth, async (req, res) => {
                 " ON B.FLUJO_IN_ID = C.IDFLUJO"+
                 " LEFT JOIN (SELECT  ID AS IDUSUARIO, NOMBRE || ' ' || APELLIDOP AS RESPONSABLE FROM USUARIO ) D"+
                 " ON A.USUARIO_ID = D.IDUSUARIO"+
-                " where A.ACEPTA = 0 AND A.RECHAZA = 1  AND A.REASIGNADA = 0 AND C.GRUPO = "+ grupo +" ORDER BY FECHA DESC;") 
+                " where A.RECHAZA = 1  AND A.REASIGNADA = 0 AND C.GRUPO = "+ grupo +" ORDER BY FECHA DESC;") 
+        }
+        else{
+            notificaciones = await db.sequelize.query(
+                "select * from detalletarea A"+
+                " LEFT JOIN (SELECT  ID AS IDTAREA, FLUJO_IN_ID, NOMBRE AS NOMBRETAREA FROM tarea ) B" +
+                " ON A.TAREA_ID = B.IDTAREA"+
+                " LEFT JOIN (SELECT  ID AS IDFLUJO, DESCRIPCION AS NOMBREFLUJO FROM FLUJO_IN ) C"+
+                " ON B.FLUJO_IN_ID = C.IDFLUJO"+
+                " where A.ACEPTA = 0 AND A.RECHAZA = 0 AND A.REASIGNADA = 0 AND A.USUARIO_ID = "+ idUser +" ORDER BY FECHA DESC;") 
         }           
             if(!notificaciones) return res.status(200).send('Usuario no tiene notificaciones')
             let index = -1
@@ -164,7 +167,8 @@ router.post('/not', auth, async (req, res) => {
                         flujoName: element.NOMBREFLUJO,
                         flujoID: element.IDFLUJO,
                         Responsable: element.RESPONSABLE,
-                        fecha: element.FECHA.toISOString().split('T')[0], 
+                        fecha: element.FECHA.toISOString().split('T')[0],
+                        Comentario: element.COMENTARIO, 
                         tareas: []
                     }                 
                     envioNoti.push(temp)
@@ -176,6 +180,7 @@ router.post('/not', auth, async (req, res) => {
                     taskName: element.NOMBRETAREA,
                     taskID: element.TAREA_ID,
                     usuarioID: element.IDUSUARIO,
+                    Comentario: element.COMENTARIO, 
                     Reasignado: 0,
                 }
                 envioNoti[index].tareas.push(temp)    

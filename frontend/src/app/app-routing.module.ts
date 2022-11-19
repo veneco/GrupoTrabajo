@@ -15,7 +15,7 @@ const routes: Routes = [ {
 {
   path: 'tasks/manager',
   component: ManagerTaskComponent,
-  canActivate: [AuthGuard]
+  canActivate: [AuthGuard],
 },
 {
   path: 'tasks',
@@ -35,6 +35,14 @@ const routes: Routes = [ {
 {
   path: 'login',
   component: LoginComponent
+},
+{
+  path: 'tasks/manager/manager',
+  redirectTo:'tasks/manager'
+},
+{
+  path: 'view/manager',
+  redirectTo:'tasks/manager'
 }];
 
 @NgModule({

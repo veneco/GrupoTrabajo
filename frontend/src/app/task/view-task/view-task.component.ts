@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from 'src/app/service/task.service';
 import { Router } from '@angular/router'
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import  {MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
-
+import { ErrorDialogComponent } from 'src/app/components/shared/error-dialog/error-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -18,7 +15,8 @@ export class ViewTaskComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private router: Router,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar) { }
 
   idTask = localStorage.getItem('flujo')
   public data: any[] = [];
@@ -114,16 +112,29 @@ cerrarFlujo()
       )
 }
 //ACTUALIZAR ESTADO DE LA TAREA YA SEA SI LA ACEPTO O LA RACHAZO
-  actuAceptRecha(task:any, opcional:any, AcepRacha:any){
+  actuAceptRecha(task:any, opcional:any, AcepRacha:any, Comentario:any = null){
     if(opcional==0)
       task.Acepta = AcepRacha
     if(opcional==1)
       task.Rechaza = AcepRacha
-    this.taskService.setTaskEstado(task)
+    this.taskService.setTaskEstado({task,Comentario})
       .subscribe(
         res=>{ 
           console.log(res)
          // location.reload();
+        },  
+        err=>{
+          console.log(err) 
+        }     
+      )
+  }
+
+  //ENVIAR REPORTE DE BUG
+  reportarBug(task:any){
+    this.taskService.setTaskBug(task)
+      .subscribe(
+        res=>{ 
+          console.log(res)
         },  
         err=>{
           console.log(err) 
@@ -143,14 +154,43 @@ cerrarFlujo()
       });
   }
   openDialogRechazarTarea(task:any, opcional:any, AcepRacha:any):void{
-    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+    const dialogRef = this.dialog.open(ErrorDialogComponent,{
       width:'350px',
       data:'Seguro que desea rechazar la tarea?'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 
-        if(res){
-          this.actuAceptRecha(task,opcional,AcepRacha)
+        if(res==undefined){
+          
+          this.snackBar.open("No se envio el rechazo de la tarea", "Cerrar", {
+            duration: 3000
+          }) 
+        }else{
+          this.actuAceptRecha(task,opcional,AcepRacha, res)
+        }
+      });
+  }
+  openDialogBug(ID:any):void{
+    const dialogRef = this.dialog.open(ErrorDialogComponent,{
+      width:'350px',
+      data:'Que error se presento en la tarea?'
+    });
+    dialogRef.afterClosed().subscribe(
+      res=>{ 
+        {
+          if(res==undefined)
+          {
+            this.snackBar.open("No se envio el reporte de error", "Cerrar", {
+              duration: 3000
+            }) 
+          }
+          else
+          {
+            this.reportarBug({ID,COMENTARIO:res})
+            this.snackBar.open("Se ha notificado al supervisor sobre el error", "Cerrar", {
+              duration: 3000
+            }) 
+          } 
         }
       });
   }

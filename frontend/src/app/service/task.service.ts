@@ -25,7 +25,7 @@ export class TaskService {
 
   private tareaPL = "http://localhost:3003/api/task/taskPL"
 
-  private taskView = "http://localhost:3003/api/task/list"
+  private taskBug = "http://localhost:3003/api/problema"
 
   constructor(private http: HttpClient) { }
 
@@ -33,12 +33,7 @@ export class TaskService {
     return localStorage.getItem('task')
   }
 
-  createImageUpload(task:any){
-    return this.http.post<any>(this.taskImageUploadUrl, task)
-  }
-
   createFlujo(flujo:any){
-
     return this.http.post<any>(this.flujoIN, flujo)
   }
 
@@ -51,12 +46,18 @@ export class TaskService {
     return this.http.put<any>(this.taskUrl, task)
   }
   setTaskEstado(task:any){
+    console.log(task)
     const url = `${this.taskUrl}/acepRecha`
     return this.http.put<any>(url, task)
   }
   getNoti(){
     const url = `${this.taskUrl}/not`
     return this.http.post<any>(url, null)
+  }
+
+  setEstadoProblema(bug:any){
+    const url = `${this.taskBug}/finishProblem`
+    return this.http.put<any>(url, bug)
   }
 
   deleteTask(task:any){
@@ -89,6 +90,8 @@ export class TaskService {
     return this.http.get<any>(this.flujo)
   }
 
+  
+
   getFlujoPL(){
     return this.http.get<any>(this.flujoPL)
   }
@@ -96,10 +99,24 @@ export class TaskService {
   getTareaPL(){
     return this.http.get<any>(this.tareaPL)
   }
+
+  getTaskBug(){
+    return this.http.get<any>(this.taskBug)
+  }
+
+  getEstado(){
+    const url = `${this.taskBug}/estado`
+    return this.http.get<any>(url)
+  }
+
   setReasignarTarea(task:any)
   {
     const url = `${this.taskUrl}/reasignar`
     return this.http.put<any>(url, task)
+  }
+
+  setTaskBug(bug:any){
+    return this.http.post<any>(this.taskBug, bug)
   }
 
 }

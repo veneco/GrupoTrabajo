@@ -84,7 +84,7 @@ router.post('/', auth, async(req, res) => {
 
     //CERRAR FLUJO
 router.put('/cerrar',auth, async (req, res) => {
-    console.log(req.body)
+   
     let flujoID = req.body.flujo;
     try {
         const flujo = await db.flujo.findOne({ where: { ID: flujoID} })
