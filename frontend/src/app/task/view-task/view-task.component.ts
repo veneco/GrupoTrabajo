@@ -37,8 +37,7 @@ export class ViewTaskComponent implements OnInit {
           this.avance = res.avance
           this.data = res.taskFlujo
           this.myTasks = res.myTasks
-          console.log(this.data)  
-          
+ 
           
         },  
         err=>{
@@ -47,8 +46,6 @@ export class ViewTaskComponent implements OnInit {
       )
       
   }
-  
-   public toolbarOptions: string[] = ['Add'];
   public resourceFields: object = {
     id: "resourceId",
     name: "resourceName"
@@ -58,13 +55,10 @@ export class ViewTaskComponent implements OnInit {
     taskLabel: "TaskName"
   }
   public columnSettings: object[] = [
-    {field: "TaskID", headerText: "ID"},
+    {field: "ID", headerText: "ID"},
     {field: "TaskName", headerText: "Nombre"},
     {field: "Responsable", headerText: "Responsable"},
-    {field: "Duration", headerText: "Duracion"},
-    {field: "StartDate", headerText: "Fecha Inicio", format:"dd-MMM-yy"},
-    { field: 'EndDate', headerText: "Fechafin", format:"dd-MMM-yy"},
-    
+    {field: "Duration", headerText: "Duracion"},  
    
   ]
   public taskSettings: object = {
@@ -80,6 +74,22 @@ export class ViewTaskComponent implements OnInit {
   }
   public timelineSettings = {
 
+  }
+  bugButton(tarea:any)
+  {
+    let valor
+    let tareaTemporal = this.data.filter((principal: any) => principal.TaskID == tarea.Orden)
+    if(tareaTemporal.length == 0){valor = true}  
+    else
+    {
+      
+    if (tareaTemporal[0].subtasks.length == 0)
+      valor = true
+    else
+      valor = false
+    }
+    return valor
+    //let filterIndex = this.data.indexOf(filterTarea[0])
   }
 
 //ACTUALIZAR ESTADO  SI EL PORCENTAJE DE AVANCE DE LA TAREA INCREMENTO

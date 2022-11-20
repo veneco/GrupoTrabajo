@@ -6,6 +6,9 @@ import  {MatDialog } from '@angular/material/dialog';
 import { ActionDialogComponent } from 'src/app/components/shared/action-dialog/action-dialog.component';
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 import { ErrorDialogComponent } from 'src/app/components/shared/error-dialog/error-dialog.component';
+import * as _moment from 'moment'
+
+const moment =  _moment;
 @Component({
   selector: 'app-manager-task',
   templateUrl: './manager-task.component.html',
@@ -17,6 +20,7 @@ export class ManagerTaskComponent implements OnInit {
     private taskService: TaskService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar) { }
+    dataSource:any
     responsable:any
     estadoAccion:any
     flujosRechazadas:any = []
@@ -30,7 +34,7 @@ export class ManagerTaskComponent implements OnInit {
     this.taskService.getNoti()
       .subscribe(
         res=>{
-          console.log(res)
+
           for (let i = 0; i < res.length; i++) {
             this.flujosRechazadas.push(res[i])
             for (let j = 0; j < this.flujosRechazadas[i].tareas.length; j++) {
@@ -46,7 +50,7 @@ export class ManagerTaskComponent implements OnInit {
       .subscribe(
         res=>{
           this.estadoAccion = res
-          console.log(res)
+
           
         },  
         err=>{
@@ -58,7 +62,7 @@ export class ManagerTaskComponent implements OnInit {
     .subscribe(
       res=>{
         this.responsable = res
-        console.log(res)
+
       },  
       err=> console.log(err)       
     ),
@@ -67,7 +71,6 @@ export class ManagerTaskComponent implements OnInit {
     .subscribe(
       res=>{
         this.bugReportado = res
-        console.log(this.bugReportado)
       },  
       err=> console.log(err)       
     )
@@ -120,6 +123,42 @@ export class ManagerTaskComponent implements OnInit {
     this.bugReportado[index].Estado= estado
   }
 
+  //FORMATO DE FECHAS
+  formatDate(date: string, duracion = 0){
+    
+    let fecha = new Date(date) 
+    fecha.setDate(fecha.getDate() + duracion);
+    return fecha.toISOString().substring(0, fecha.toISOString().length - 1)
+    
+
+  }
+//ENVIO DE LISTADO CON LAS NUEVAS FECHAS A LA BASE DE DATOS
+  enviarFechasActu(listado:any)
+  {
+    this.taskService.setDateTasks(listado)
+      .subscribe(
+                res=>{
+                  
+                  console.log(res)
+                },  
+                err=> console.log(err)       
+              )
+  }
+
+  //ACTUALIZAR PROBLEMAS_T
+  actuProblema_T(bug:any){ 
+    this.taskService.setEstadoProblema(bug)
+    .subscribe(
+      res=>{ 
+        location.reload();
+      },  
+      err=>{
+        console.log(err) 
+      }     
+    )
+  }
+
+
   setEstado(bug:any){
     switch(bug.Estado)
     {//NO SELECCIONO NADA
@@ -142,7 +181,7 @@ export class ManagerTaskComponent implements OnInit {
                 duration: 3000
               }) 
             }else{
-             console.log(bug)
+   
              // ACTUALIZAR DETALLESTAREA
              let Comentario = "Reasignado por " + localStorage.getItem('nombre')
              let task={TaskID: bug.TaskID, Acepta:1, Rechaza:1}
@@ -155,23 +194,15 @@ export class ManagerTaskComponent implements OnInit {
                   console.log(err) 
                 }     
               )
-              //ACTUALIZAR PROBLEMAS_T
-              this.taskService.setEstadoProblema(bug)
-              .subscribe(
-                res=>{ 
-                  console.log(res)
-                  location.reload();
-                },  
-                err=>{
-                  console.log(err) 
-                }     
-              )
+              this.actuProblema_T(bug)
             }
           });
 
 
         break;
+        //RECALCULO DE FECHAS DE LAS TAREAS
       case 3:
+        
         const dialogDias = this.dialog.open(ErrorDialogComponent,{
           width:'350px',
           data:'Cuantos dias le asignara a la tarea?'
@@ -185,17 +216,111 @@ export class ManagerTaskComponent implements OnInit {
                 duration: 3000
               }) 
             }else{
-           
+              let diasIncremento = res
+              let data:any
+              let fechainicial:any
+
+              this.taskService.getDateTasks(bug.FlujoID)
+              .subscribe(
+                res=>{
+                  fechainicial = res[0].FECHAINICIO
+                  data = res
+                  let filterTarea = data.filter((tarea: any) => tarea.ID == bug.TaskID)
+                  let filterIndex = data.indexOf(filterTarea[0])
+                  data[filterIndex].DURACION = parseInt(diasIncremento) 
+  
+                  this.recalcularFechas(data, fechainicial)
+                  
+                },  
+                err=> console.log(err)       
+              )
+              this.actuProblema_T(bug)
             }
           });
         break;
-
+//NINGUNA ACCION TOMADA
       case 4:
-        console.log("caso 4")
+        this.actuProblema_T(bug)
         break;
     }
     
   }
+  recalcularFechas(data:any, fechainicial:any){
+  
+    let listado: any[]=[]
+    let fechaInicio: any[]=[]
+    let fechaFin: any[]=[]
+    let ultimaPredecedora:any
+    let duracionTotal:any
+    
+      Object.keys(data).forEach((key, index)=>{
+        const tarea = data[key]
+       
+        if(tarea.DE_SUBTAREA != 0)
+        {          
+
+          if(tarea.PREDECEDORA == ultimaPredecedora+1){
+            let fechatemporalInit= this.formatDate(fechaInicio[ultimaPredecedora])
+            fechaInicio.push(fechatemporalInit)
+            
+            if(tarea.DURACION == duracionTotal){  
+              duracionTotal = tarea.DURACION
+              let fechatemporalFin= this.formatDate(fechaInicio[ultimaPredecedora],duracionTotal)
+              fechaFin[ultimaPredecedora]=fechatemporalFin
+              let fechatemporalfinsub= this.formatDate(fechaInicio[ultimaPredecedora],duracionTotal)
+              fechaFin[index]=fechatemporalfinsub
+            }            
+            else{
+              duracionTotal = duracionTotal+ tarea.DURACION
+              let fechatemporalFin= this.formatDate(fechaInicio[ultimaPredecedora],duracionTotal)
+              fechaFin[ultimaPredecedora]=fechatemporalFin
+              let fechatemporalfinsub= this.formatDate(fechaInicio[ultimaPredecedora],duracionTotal)
+              fechaFin[index]=fechatemporalfinsub   
+            }
+             
+          }
+          else{
+            let fechatemporalInit= this.formatDate(fechaInicio[index-1],tarea.DURACION)
+            fechaInicio.push(fechatemporalInit)
+            let fechatemporalfinsub= this.formatDate(fechaInicio[index],tarea.DURACION)
+            fechaFin.push(fechatemporalfinsub)           
+          }        
+        }
+        else{  
+          if (index == 0){
+            
+            let fechatemporal= this.formatDate(fechainicial)
+            fechaInicio.push(fechatemporal) 
+          }
+          else{
+            let fechatemporal= this.formatDate(fechaFin[index-1])
+            fechaInicio.push(fechatemporal)
+          }
+          ultimaPredecedora = tarea.PREDECEDORA
+            duracionTotal = 0
+            
+            if(tarea.SUBTAREA == '1')
+            {
+              let fechatemporal= '2000-10-10'
+              fechaFin.push(fechatemporal)
+            }        
+            else{
+              let fechatemporal= this.formatDate(fechaInicio[index],tarea.DURACION)
+              fechaFin.push(fechatemporal)
+            }
+        }
+        listado.push({TAREA:tarea , FECHAINICIO:fechaInicio[index], FECHAFIN:fechaFin[index]})
+        
+      })
+      for (let index = 0; index < fechaFin.length; index++) {
+        listado[index].FECHAFIN = fechaFin[index]
+        
+      }
+
+      
+      this.enviarFechasActu(listado)
+  }
+
 
 
 }

@@ -6,7 +6,7 @@
     <app-sidebar></app-sidebar>
     <div class="projects-section">
       <div class="projects-section-header">
-        <p>Tareas</p>
+        <p>Tarea ID# {{idTask}}</p>
         <p class="time"></p>
       </div>
       <div class="projects-section-line">
@@ -52,11 +52,12 @@
           <div class="message-box" *ngIf="element.Rechaza == 0">
             <div class="message-content">
               <div class="message-header">
-                <div class="name">{{element.Orden}} {{element.TaskName}}</div>
+                <div class="name">{{element.TaskID}}. {{element.TaskName}}</div>
                 <div class="star-checkbox">
                   <input type="checkbox" id="star-1">
-                  <label for="star-1">
-                    <i class="gg-debug" (click)="openDialogBug(element.TaskID)"></i>
+                  <label for="star-1" >
+                    <span *ngIf="bugButton(element)"> <i  class="gg-debug" (click)="openDialogBug(element.TaskID)"></i></span>
+                    
                   </label>
                 </div>
               </div>

@@ -18,8 +18,6 @@ router.get('/:id', auth, async (req, res) => {
                 " ON A.id = B.TAREA_ID LEFT JOIN (SELECT ID AS IDRESPONSABLE," +
                 " nombre || ' ' || apellidop || ' ' || apellidom AS RESPONSABLE FROM usuario)C"+
                 " ON B.USUARIO_ID = C.IDRESPONSABLE  WHERE FLUJO_IN_ID ="+ idtask+" AND B.REASIGNADA = 0 ORDER BY ORDEN") 
-            /*await db.task.findAll({ where: { FLUJO_IN_ID: idtask },
-                order: [['ORDEN', 'ASC']] })*/
             if(!task) return res.status(200).send('Usuario no tiene tareas')
             task[0].forEach( (element, index) => {
                 let temp
@@ -39,6 +37,7 @@ router.get('/:id', auth, async (req, res) => {
                 if(element.SUBTAREA == 0 || element.ORDEN == 0){
                     temp = 
                     {
+                        ID: element.ID,
                         TaskID: (element.ORDEN+1),
                         TaskName:element.NOMBRE,
                         StartDate: element.FECHAINICIO.toISOString().substring(0, element.FECHAINICIO.toISOString().length - 1),
@@ -54,6 +53,7 @@ router.get('/:id', auth, async (req, res) => {
                     }
                     else{
                         temp =  {
+                            ID: element.ID,
                             TaskID: (element.ORDEN+1),
                             TaskName: ".   "+element.NOMBRE,
                             StartDate: element.FECHAINICIO.toISOString().substring(0, element.FECHAINICIO.toISOString().length - 1),

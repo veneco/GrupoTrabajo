@@ -46,8 +46,7 @@ export class ListTaskComponent implements OnInit {
             tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
             this.flujosInstanciado.push(tempFlujo[i])
                        
-          }
-          console.log(this.flujosInstanciado)          
+          }        
         },  
         err=>{
           console.log(err) 

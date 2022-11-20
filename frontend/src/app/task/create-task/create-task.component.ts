@@ -3,12 +3,10 @@ import { TaskService } from '../../service/task.service'
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as _moment from 'moment'
-import { HttpErrorResponse } from '@angular/common/http'
 import { Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { DatePipe } from '@angular/common';
-import { EMPTY, empty, Observable } from 'rxjs';
+
 
 const moment =  _moment;
 @Component({
@@ -80,6 +78,7 @@ export class CreateTaskComponent implements OnInit {
  prueba(flujo:any, index:any ){
 
     this.dataSource = this.tarea[index]
+    console.log(this.dataSource)
     this.snackBar.open(flujo.DESCRIPCION, "Cerrar", {
       duration: 20000
     })

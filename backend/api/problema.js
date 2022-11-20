@@ -86,7 +86,7 @@ router.put('/finishProblem', auth, async(req, res) => {
     let ESTADO_ID =req.body.Estado
 
     try {
-        const problema = await db.problema.findOne({ where: { ID: BUGID} })
+        const problema = await db.problema.findOne({ where: { ID: BUGID}})
         if(!problema) return res.status(400).send('problema no existe')
         const update = await db.problema.update(
             {
@@ -102,5 +102,55 @@ router.put('/finishProblem', auth, async(req, res) => {
     }
 
     });
+
+    //LLAMAR TAREAS DE UN PROBLEMA
+router.get('/:id', auth, async(req, res) => {
+   console.log(req.params)
+    let FLUJO_IN_ID = req.params.id;
+
+    try {
+        const tasks = await db.sequelize.query(
+            "select * from tarea A" +
+            " LEFT JOIN (SELECT NOMBRE, ORDEN , DE_SUBTAREA FROM tarea_pl ) B" +
+            " ON A.ORDEN = B.ORDEN"+
+            " where flujo_in_id = "+FLUJO_IN_ID+" AND A.NOMBRE = B.NOMBRE ORDER BY A.ORDEN ASC")
+        if(!tasks) return res.status(400).send('tareas no existen')
+       
+      
+        res.status(200).send(tasks[0])
+    } catch (error) {
+        res.status(400).send('no se pudo crear el usuario por '+ error)
+    }
+
+    });
+    //UPDATE FECHA TAREAS POR UN PROBLEMA REPORTADO
+    router.put('/updateTask', auth, async(req, res) => {
+        let largo = Object.keys(req.body).length 
+        
+        
+        try {
+        for (let i = 0; i < largo; i++) {   
+            let FECHAINICIO =req.body[i].FECHAINICIO;
+            let FECHAFIN =req.body[i].FECHAFIN;
+            let TAREAID =req.body[i].TAREA.ID;
+            let DURACION =req.body[i].TAREA.DURACION
+        
+            const tarea = await db.task.findOne({ where: { ID: TAREAID} })
+            if(!tarea) return res.status(400).send('tarea no existe')
+            const updateFecha = await db.task.update(
+                {
+                    FECHAINICIO: FECHAINICIO,
+                    FECHAFIN: FECHAFIN,
+                    DURACION:DURACION
+                },
+                {where:{ID: TAREAID}
+        })
+        }   
+            res.status(200).send(200)
+        } catch (error) {
+            res.status(400).send('no se pudo crear el usuario por '+ error)
+        }
+    
+        });
 
 module.exports = router;

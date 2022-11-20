@@ -104,6 +104,18 @@ export class TaskService {
     return this.http.get<any>(this.taskBug)
   }
 
+  getDateTasks(id:any){
+
+    const url = `${this.taskBug}/${id}`
+    return this.http.get<any>(url)
+  }
+
+  setDateTasks(listado:any){
+
+    const url = `${this.taskBug}/updateTask`
+    return this.http.put<any>(url, listado)
+  }
+
   getEstado(){
     const url = `${this.taskBug}/estado`
     return this.http.get<any>(url)
