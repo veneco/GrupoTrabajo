@@ -37,6 +37,7 @@ export class AuthService {
       localStorage.removeItem('flujo')
       localStorage.removeItem('rol')
       localStorage.removeItem('nombre')
+      localStorage.removeItem('activo')
       this.router.navigate(['/login'])
       
     }

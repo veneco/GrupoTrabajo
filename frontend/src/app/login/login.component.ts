@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit, PipeTransform {
           localStorage.setItem('token', res.jwtToken)
           localStorage.setItem('rol', res.rol)
           localStorage.setItem('nombre', res.nombre)
+          localStorage.setItem('activo', '0')
           this.router.navigate(['/tasks'])
         },
         err => console.log(err)

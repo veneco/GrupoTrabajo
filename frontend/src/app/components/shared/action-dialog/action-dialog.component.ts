@@ -6,16 +6,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./action-dialog.component.css']
 })
 export class ActionDialogComponent implements OnInit {
-
+  fluj:any
   constructor(public dialogRef: MatDialogRef<ActionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)public data: {responsables:any, bug:any}) { }
+    @Inject(MAT_DIALOG_DATA)public data: {flujos:any}) { }
 
 prueba:any
   ngOnInit(): void {
-    this.prueba = this.data.responsables
+    this.fluj = this.data
+   console.log(this.fluj.length )
   }
   onClickNO():void
   {
-    console.log(this.prueba)
+    
   }
 }

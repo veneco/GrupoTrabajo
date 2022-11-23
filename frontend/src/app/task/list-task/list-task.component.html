@@ -52,6 +52,7 @@
                 <div class="days-left elementID">
                   #{{element.ID}}
                 </div>
+                
               </div>
               <div class="more-wrapper" >
                 <button class="project-btn-more">
@@ -72,7 +73,7 @@
             <div class="box-progress-wrapper">
               <p class="box-progress-percentage"> Tiempo Restante</p>
               <div class="box-progress-bar">
-                <span *ngIf="semaforo(element.FECHAFIN)" class="box-progress prueba"><mat-progress-bar mode="determinate" color="warn" value={{avancePorFecha(element)}}></mat-progress-bar></span>
+                <span *ngIf="semaforo(element.FECHAFIN, 1)" class="box-progress prueba"><mat-progress-bar mode="determinate" color="warn" value={{avancePorFecha(element)}}></mat-progress-bar></span>
               </div>
               <div class="box-progress-bar">
                 <span class="box-progress prueba"><mat-progress-bar mode="determinate" value={{element.AVANCETOTAL}}></mat-progress-bar></span>
@@ -82,8 +83,10 @@
             </div>
             <div class="project-box-footer">
               <div class="days-left"[ngClass]="{'green': ColorSemaforo==2,'yellow': ColorSemaforo==1,'red': ColorSemaforo==0}">
-                 {{semaforo(element.FECHAFIN, 2)}} Dias
+                <span *ngIf="total > 0; else templateName ">{{total}} Dias</span>
+                <ng-template #templateName> <span  matTooltip="ATRASADA">{{total}} Dias</span> </ng-template>
               </div>
+              
             </div>
           </div>
         </div>

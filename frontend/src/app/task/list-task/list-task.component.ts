@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskService } from 'src/app/service/task.service';
 import { CargarScriptsService } from 'src/app/service/cargarJs/cargar-scripts.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { ActionDialogComponent } from 'src/app/components/shared/action-dialog/action-dialog.component';
+import  {MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-task',
@@ -18,6 +20,7 @@ export class ListTaskComponent implements OnInit {
   constructor(private taskService: TaskService,
     private snackBar: MatSnackBar,
     private router: Router,
+    public dialog: MatDialog,
     private _CargarScripts:CargarScriptsService,
     public authService: AuthService
     ) { 
@@ -31,41 +34,60 @@ export class ListTaskComponent implements OnInit {
     retrasado:any = 0
     notificaciones:any =[]
     total:any
+    flujoAtrasado:any =[]
     rol:any = localStorage.getItem('rol')
 
     
   async ngOnInit() {
-      this.taskService.getFlujo()
+    this.taskService.getNoti()
       .subscribe(
         res=>{
-          let tempFlujo = res.flujo[0]
-          
-          this.datos = res.userData
-          for (let i = 0; i < tempFlujo.length; i++) {
-            tempFlujo[i].FECHAFIN = this.formatDate(tempFlujo[i].FECHAFIN)
-            tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
-            this.flujosInstanciado.push(tempFlujo[i])
-                       
-          }        
-        },  
-        err=>{
-          console.log(err) 
-        }     
-      ),
-      this.taskService.getNoti()
-      .subscribe(
-        res=>{
+          console.log(res)
           this.notificaciones = res 
         },  
         err=>{
           console.log(err) 
         }     
+      ),
+      this.taskService.getFlujo()
+      .subscribe(
+        res=>{
+          let tempFlujo = res.flujo[0]
+          console.log(res.flujo[0])
+          this.datos = res.userData
+          for (let i = 0; i < tempFlujo.length; i++) {
+            tempFlujo[i].FECHAFIN = this.formatDate(tempFlujo[i].FECHAFIN)
+            tempFlujo[i].FECHAINICIO = this.formatDate(tempFlujo[i].FECHAINICIO)
+            this.flujosInstanciado.push(tempFlujo[i])
+            let numero = this.semaforo(tempFlujo[i].FECHAFIN)
+            if(numero < 0) {
+              this.flujoAtrasado.push(tempFlujo[i])
+            }          
+          }
+          if(localStorage.getItem('activo') == '0' && this.flujoAtrasado.length >0)
+          {
+            this.openDialogCerrarFlujo()
+            localStorage.setItem('activo', '1')
+            console.log("logrado")
+          } 
+          console.log(this.flujoAtrasado.length)       
+        },  
+        err=>{
+          console.log(err) 
+        }     
       )
+
       this.datetoday =  this.datetoday.getDate() + "-"
       +(this.datetoday.getMonth()+1) + "-"
       +this.datetoday.getFullYear()
   }
 
+  openDialogCerrarFlujo():void{
+    const dialogRef = this.dialog.open(ActionDialogComponent,{
+      width:'350px',
+      data: this.flujoAtrasado
+    });
+  }
   viewFlujo(data:any){
     localStorage.setItem('flujo', data.ID)
     this.router.navigate(['/view'])
