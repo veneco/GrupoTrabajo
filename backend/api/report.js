@@ -5,12 +5,27 @@ const router = express.Router();
 const auth = require('../middleware/auth')
 
 router.get('/list',auth, async (req, res) => {
-    let iduser = req.user.id
-    let id =req.body.user;
+    let grupoUser = req.user.grupo
     try {
-        let user = await db.usuario.findAll({ where: { ID: iduser } })
-        if(!user) return res.status(400).send('Usuario no esta en Base de Datos')
-        res.status(200).send(user)
+        let tasks = await db.sequelize.query(
+            "select * from tarea A"+
+            " LEFT JOIN (SELECT TAREA_ID, USUARIO_ID, REASIGNADA FROM DETALLETAREA)B"+
+            " ON A.ID = B.TAREA_ID"+
+            " LEFT JOIN (SELECT ID AS IDRESPONSABLE, GRUPOTRABAJO_ID, nombre || ' ' || apellidop AS RESPONSABLE FROM USUARIO)C"+
+            " ON B.USUARIO_ID = C.IDRESPONSABLE where B.REASIGNADA = 0 AND A.DELETED = 0 AND C.GRUPOTRABAJO_ID = "+ grupoUser +" ORDER BY A.FLUJO_IN_ID"
+        )
+        res.status(200).send(tasks[0])
+    } catch (error) {
+        res.status(400).send('no se pudo logear '+ error)
+    }
+   
+});
+
+router.get('/flujos',auth, async (req, res) => {
+    let grupoUser = req.user.grupo
+    try {
+        let flujo = await db.flujo.findAll({ where: { GRUPOTRABAJO_ID: grupoUser} })
+        res.status(200).send(flujo)
     } catch (error) {
         res.status(400).send('no se pudo logear '+ error)
     }
@@ -34,7 +49,13 @@ router.get('/grupo',auth, async (req, res) => {
     let grupotrabajoId = req.user.grupo
 
         try {
-            let grupo = await db.usuario.findAll()
+            let grupo = await db.sequelize.query(
+                "select * from tarea A"+
+                " LEFT JOIN (SELECT TAREA_ID, USUARIO_ID, REASIGNADA FROM DETALLETAREA)B"+
+                " ON A.ID = B.TAREA_ID"+
+                " LEFT JOIN (SELECT ID AS IDRESPONSABLE, GRUPOTRABAJO_ID, nombre || ' ' || apellidop AS RESPONSABLE FROM USUARIO)C"+
+                " ON B.USUARIO_ID = C.IDRESPONSABLE where B.REASIGNADA = 0 AND A.DELETED = 0"
+            )
             res.status(200).send(grupo)
         } catch (error) {
             res.status(400).send(error)

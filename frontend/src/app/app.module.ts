@@ -42,6 +42,9 @@ import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confi
 import { ErrorDialogComponent } from './components/shared/error-dialog/error-dialog.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ActionDialogComponent } from './components/shared/action-dialog/action-dialog.component';
+import { ReportComponent } from './report/report.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTreeModule} from '@angular/material/tree';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +58,7 @@ import { ActionDialogComponent } from './components/shared/action-dialog/action-
     ConfirmDialogComponent,
     ErrorDialogComponent,
     ActionDialogComponent,
+    ReportComponent,
     
   ],
   imports: [
@@ -83,7 +87,9 @@ import { ActionDialogComponent } from './components/shared/action-dialog/action-
     MatDividerModule,
     MatListModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatTreeModule
     
   ],
   entryComponents:[ConfirmDialogComponent, ErrorDialogComponent, ActionDialogComponent],

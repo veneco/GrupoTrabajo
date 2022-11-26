@@ -6,6 +6,7 @@ const auth = require('./api/auth')
 const flujo = require('./api/flujo')
 const task = require('./api/task')
 const problema = require('./api/problema')
+const report = require('./api/report')
 const app = express();
 const cors = require('cors')
 
@@ -20,6 +21,7 @@ app.use('/api/auth', auth)
 app.use('/api/flujo', flujo)
 app.use('/api/task', task)
 app.use('/api/problema', problema)
+app.use('/api/report', report)
 
 const port = process.env.PORT || 3003
 app.listen(port, () => console.log('conectado en el puerto '+ port));

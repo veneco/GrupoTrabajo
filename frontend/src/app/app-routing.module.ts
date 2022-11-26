@@ -6,6 +6,7 @@ import { AuthGuard } from './guard/auth.guard'
 import { CreateTaskComponent } from './task/create-task/create-task.component';
 import { ViewTaskComponent } from './task/view-task/view-task.component';
 import { ManagerTaskComponent } from './task/manager-task/manager-task.component';
+import { ReportComponent } from './report/report.component';
 
 const routes: Routes = [ {
   path: '',
@@ -28,6 +29,11 @@ const routes: Routes = [ {
   canActivate: [AuthGuard]
 },
 {
+  path: 'report',
+  component: ReportComponent,
+  canActivate: [AuthGuard]
+},
+{
     path: 'view',
     component: ViewTaskComponent,
     canActivate: [AuthGuard]
@@ -43,7 +49,24 @@ const routes: Routes = [ {
 {
   path: 'view/manager',
   redirectTo:'tasks/manager'
-}];
+},
+{
+  path: 'report/manager',
+  redirectTo:'tasks/manager'
+},
+{
+  path: 'tasks/report',
+  redirectTo:'report'
+},
+{
+  path: 'view/report',
+  redirectTo:'report'
+},
+{
+  path: 'tasks/manager/report',
+  redirectTo:'report'
+}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
