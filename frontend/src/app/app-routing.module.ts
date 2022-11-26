@@ -65,6 +65,10 @@ const routes: Routes = [ {
 {
   path: 'tasks/manager/report',
   redirectTo:'report'
+},
+{
+  path: 'report/report',
+  redirectTo:'report'
 }
 ];
 

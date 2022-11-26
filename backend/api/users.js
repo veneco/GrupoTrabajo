@@ -34,7 +34,7 @@ router.get('/grupo',auth, async (req, res) => {
     let grupotrabajoId = req.user.grupo
 
         try {
-            let grupo = await db.usuario.findAll()
+            let grupo = await db.usuario.findAll({ where: { GRUPOTRABAJO_ID: grupotrabajoId } })
             res.status(200).send(grupo)
         } catch (error) {
             res.status(400).send(error)

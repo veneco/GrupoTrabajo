@@ -92,18 +92,18 @@
                     <mat-tab-group mat-align-tabs="center" class="label">
                         <mat-tab *ngFor="let grupo of grupoTrabajo; let i= index" label= "Grupo # {{grupo}}">
                             <mat-tab-group mat-align-tabs="center" class="label">
-                                <mat-tab *ngFor="let empleado of filtrarFlujosGrupo(grupo, '0'); let i= index" label= "{{empleado.NOMBRE}} {{empleado.APELLIDOP}}">
+                                <mat-tab *ngFor="let empleado of filtrarFlujosGrupo(grupo, '0'); let i= index" label= "Flujo #{{empleado.ID}}">
                                    <div>
                                     <div class="eee">
                                     <mat-card class="example-card">
                                         <mat-card-content>
-                                          <h2 class="example-h2">Carga laboral</h2>
+                                          <h2 class="example-h2">AVANCE FLUJO</h2>
                                       
                                           <mat-progress-spinner
                                               class="example-margin"
-                                              value={{calcularCarga(empleado.ID)}}>
+                                              value={{calcularAvance(empleado.ID)}}>
                                           </mat-progress-spinner>
-                                          <h2 class="example-h2">{{calcularCarga(empleado.ID)}} / 100</h2>
+                                          <h2 class="example-h2">{{calcularAvance(empleado.ID)}} / 100</h2>
                                           
                                         </mat-card-content>
                                       </mat-card>
@@ -111,10 +111,9 @@
                                    
                                 </div>
                                    <div class="eeee">
-                                    <mat-tab-group mat-align-tabs="center" class="label">
-                                        <mat-tab *ngFor="let flujo of filtrarFlujos(empleado.ID); let i= index"  label= "Flujo # {{flujo}}">
+                                    
                                             
-                                            <table mat-table [dataSource]="filtrarTarea(flujo,empleado.ID)" class="mat-elevation-z8">
+                                            <table mat-table [dataSource]="filtrarTareasGrupo(empleado.ID)" class="mat-elevation-z8">
             
                                                 <!--- Note that these columns can be defined in any order.
                                                       The actual rendered columns are set as a property on the row definition" -->
@@ -152,10 +151,6 @@
                                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                               </table>
-            
-            
-                                        </mat-tab>
-                                    </mat-tab-group>
                                    </div>
                 
                                 </mat-tab>
@@ -173,13 +168,13 @@
                                     <div class="eee">
                                     <mat-card class="example-card">
                                         <mat-card-content>
-                                          <h2 class="example-h2">Carga laboral</h2>
+                                          <h2 class="example-h2">AVANCE FLUJO</h2>
                                       
                                           <mat-progress-spinner
                                               class="example-margin"
-                                              value={{calcularCarga(empleado.ID)}}>
+                                              value={{calcularAvance(empleado.ID)}}>
                                           </mat-progress-spinner>
-                                          <h2 class="example-h2">{{calcularCarga(empleado.ID)}} / 100</h2>
+                                          <h2 class="example-h2">{{calcularAvance(empleado.ID)}} / 100</h2>
                                           
                                         </mat-card-content>
                                       </mat-card>
@@ -187,10 +182,9 @@
                                    
                                 </div>
                                    <div class="eeee">
-                                    <mat-tab-group mat-align-tabs="center" class="label">
-                                        <mat-tab *ngFor="let flujo of filtrarFlujos(empleado.ID); let i= index"  label= "Flujo # {{flujo}}">
+                                    
                                             
-                                            <table mat-table [dataSource]="filtrarTarea(flujo,empleado.ID)" class="mat-elevation-z8">
+                                            <table mat-table [dataSource]="filtrarTareasGrupo(empleado.ID)" class="mat-elevation-z8">
             
                                                 <!--- Note that these columns can be defined in any order.
                                                       The actual rendered columns are set as a property on the row definition" -->
@@ -228,10 +222,6 @@
                                                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                                               </table>
-            
-            
-                                        </mat-tab>
-                                    </mat-tab-group>
                                    </div>
                 
                                 </mat-tab>

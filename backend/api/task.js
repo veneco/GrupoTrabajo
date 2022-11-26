@@ -133,7 +133,7 @@ router.post('/not', auth, async (req, res) => {
     let envioNoti =[]
     let notificaciones = []
     try {    
-        if(rol == 5){
+        if(rol == 3 || rol == 8){
             notificaciones = await db.sequelize.query(
                 "select * from detalletarea A"+
                 " LEFT JOIN (SELECT  ID AS IDTAREA, FLUJO_IN_ID, NOMBRE AS NOMBRETAREA FROM tarea ) B" +

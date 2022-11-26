@@ -1,13 +1,13 @@
 
       <div class="app-sidebar">
 
-        <a *ngIf="authService.isAdmin()" class="app-sidebar-link" title="Grafico" routerLink="manager">
+        <a *ngIf="authService.isAdmin()" class="app-sidebar-link" matTooltip="Reporte Tareas y Flujos" routerLink="report">
           <svg class="link-icon"  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-pie-chart" viewBox="0 0 24 24">
             <defs />
             <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
           </svg>
         </a>
-        <span routerLink="report"><a class="app-sidebar-link"  title="Monitoreo tareas">
+        <span *ngIf="authService.isAdmin()" routerLink="manager"><a class="app-sidebar-link"  matTooltip="Problemas y Reasignacion">
           <svg   xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
             <line x1="16" y1="2" x2="16" y2="6" />

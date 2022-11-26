@@ -24,7 +24,7 @@ export class AuthService {
     }
     isAdmin(){
       let rol = localStorage.getItem('rol')
-      if (rol == "5") 
+      if (rol == "3" || rol == "8") 
         return true    
       else
         return false

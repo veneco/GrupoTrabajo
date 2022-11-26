@@ -29,7 +29,7 @@ export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
 
-      this.taskService.getGrupo()
+      this.reportService.getGrupo()
       .subscribe(
       res=>{
         this.empleados = res
@@ -46,7 +46,7 @@ export class ReportComponent implements OnInit {
       .subscribe(
         res=>{
           this.tareas = res
-          //console.log(res)
+          console.log(res)
         },  
         err=>{
           console.log(err) 
@@ -87,6 +87,13 @@ export class ReportComponent implements OnInit {
     return empleadosFiltrados
   }
 
+  //FILTRAR FLUJOS POR GRUPO DE TRABAJO
+  filtrarTareasGrupo(flujoID:any){
+    const flujosFiltradas = this.tareas.filter((tarea: any) => tarea.FLUJO_IN_ID == flujoID)
+   // console.log(flujosFiltradas)
+    return flujosFiltradas
+  }
+
   
 
   //FILTRAR LAS TAREAS PARA QUE SE VEAN EN LA VISTA
@@ -103,6 +110,17 @@ export class ReportComponent implements OnInit {
     tareasFiltradas.forEach((element:any) => {
       carga = carga + element.DURACION
     });
+    return carga
+  }
+
+  //CALCULAR AVANCE DEL FLUJO
+  calcularAvance(flujoID:any){
+    let carga:any = 0
+    const flujoFiltradas = this.tareas.filter((flujo: any) => flujo.FLUJO_IN_ID == flujoID)
+    flujoFiltradas.forEach((element:any) => {
+      carga = carga + element.AVANCE
+    });
+    carga = Math.round(carga / flujoFiltradas.length)
     return carga
   }
 
