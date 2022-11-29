@@ -83,26 +83,8 @@
       </div>
       <div class="messages">
         <div class="message-box" *ngFor="let noti of notificaciones; let i = index">
-          <a *ngIf="rol != 5; else templateName">
-          <div class="message-content" >
-            <div class="message-header">
-              <div class="name">Flujo aginado ID {{noti.flujoID}} {{noti.flujoName}} </div>
-              <div class="star-checkbox">
-                <input type="checkbox" id="star-1">
-                <label for="star-1">
-                  <i class="gg-toolbox"></i>
-                </label>
-              </div>
-            </div>
-            <p class="message-line">
-              Tienes {{notificaciones[i].tareas.length}} tareas pendientes, se debe aceptar la tareas asignadas para no incorrir en retrasos o realizar un reporte si se presenta algun inconveniente
-            </p>
-            <p class="message-line time">
-              {{noti.fecha}}
-            </p>
-          </div>
-        </a>
-        <ng-template #templateName>
+          <a *ngIf="rol == 3 || rol ==8; else templateName">
+          
           <div class="message-content" >
             <div class="message-header">
               <div class="name">Tarea en el Flujo {{noti.flujoID}} rechazado</div>
@@ -123,6 +105,25 @@
                 Tienes {{notificaciones[i].tareas.length}} tarea rechazada por este flujo, se debe verificar el estado de la tarea para su reasignacion
                 
               </ng-template>
+            </p>
+            <p class="message-line time">
+              {{noti.fecha}}
+            </p>
+          </div>
+        </a>
+        <ng-template #templateName>
+          <div class="message-content" >
+            <div class="message-header">
+              <div class="name">Flujo aginado ID {{noti.flujoID}} {{noti.flujoName}} </div>
+              <div class="star-checkbox">
+                <input type="checkbox" id="star-1">
+                <label for="star-1">
+                  <i class="gg-toolbox"></i>
+                </label>
+              </div>
+            </div>
+            <p class="message-line">
+              Tienes {{notificaciones[i].tareas.length}} tareas pendientes, se debe aceptar la tareas asignadas para no incorrir en retrasos o realizar un reporte si se presenta algun inconveniente
             </p>
             <p class="message-line time">
               {{noti.fecha}}

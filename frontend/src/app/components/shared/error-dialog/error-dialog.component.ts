@@ -10,6 +10,8 @@ export class ErrorDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>,
     @Inject(MAT_DIALOG_DATA)public data: {message: string}) { }
   comentario:string =""
+  mensaje = this.data.toString().split('/')[0]
+  titulo = this.data.toString().split('/')[1]
   ngOnInit(): void {
   }
   onClickNO():void

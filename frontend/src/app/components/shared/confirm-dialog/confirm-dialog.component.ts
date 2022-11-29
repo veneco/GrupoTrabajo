@@ -9,7 +9,8 @@ export class ConfirmDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA)public data: {message: string}) { }
-
+    mensaje = this.data.toString().split('/')[0]
+    titulo = this.data.toString().split('/')[1]
   ngOnInit(): void {
   }
   onClickNO():void

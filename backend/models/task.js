@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     FLUJO_IN_ID: DataTypes.INTEGER,
     PREDECEDORA: DataTypes.INTEGER,
     SUBTAREA: DataTypes.STRING,
+    ATRASO: DataTypes.INTEGER
     
 
   }, {

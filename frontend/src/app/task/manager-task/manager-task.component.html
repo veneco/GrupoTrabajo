@@ -4,7 +4,7 @@
         <app-sidebar></app-sidebar>
         <div class="projects-section">
           <div class="projects-section-header">
-            <p>Control de Tareas</p>
+            <p>Problemas y Reasignaciones</p>
             <p class="time"> </p>
           </div>
           <div class="projects-section-line">
@@ -26,10 +26,10 @@
           </div>
           <div class="project-boxes jsGridView"  name="asd">
             <mat-tab-group mat-align-tabs="center" class="label">
-              <mat-tab label="Tareas rechazadas">
+              <mat-tab label="Tareas Rechazadas">
             <mat-tab-group mat-align-tabs="center" class="label">
               
-              <mat-tab *ngFor="let flujo of flujosRechazadas; let i= index" label= "Flujo# {{flujo.flujoID}}">
+              <mat-tab *ngFor="let flujo of flujosRechazadas; let i= index" label= "Flujo {{flujo.flujoID}}">
                 
 
                 <table mat-table [dataSource]="filtrarTarea(flujo.flujoID)" class="mat-elevation-z8">

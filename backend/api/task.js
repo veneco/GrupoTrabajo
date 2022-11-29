@@ -30,7 +30,10 @@ router.get('/:id', auth, async (req, res) => {
                         Finalizada: element.FINALIZADA,
                         Acepta: element.ACEPTA,
                         Rechaza: element.RECHAZA,
-                        Orden: (element.ORDEN+1)
+                        Orden: (element.ORDEN+1),
+                        FechaFin: element.FECHAFIN.toISOString().split('T')[0],
+                        FechaInicio: element.FECHAINICIO.toISOString().split('T')[0],
+                        Atraso: element.ATRASO
                     }
                     myTasks.push(temp)
                 } 
@@ -80,18 +83,20 @@ router.get('/:id', auth, async (req, res) => {
 });
 //ACTUALIZAR TAREA
 router.put('/', auth, async (req, res) => {
+    console.log(req.body)
     let idTask = req.body.TaskID
     let AVANCE = req.body.Avance
-    let ACEPTA = req.body.Avance
-    let RECHAZA = req.body.Rechaza
+    let ATRASO = req.body.Atraso
+    let FINALIZADA = req.body.Finalizada
+
 
     try {
         const taskDetalle = await db.task.findOne({ where: { ID: idTask} })
         if(!taskDetalle) return res.status(400).send('tarea no existe')
         const update = await db.task.update(
             {AVANCE: AVANCE,
-            ACEPTA: ACEPTA,
-            RECHAZA:RECHAZA},
+            FINALIZADA:FINALIZADA,
+            ATRASO: ATRASO},
             {where:{ID: idTask}
         })
             res.status(200).send(update)

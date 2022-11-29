@@ -19,13 +19,16 @@ export class ViewTaskComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   idTask = localStorage.getItem('flujo')
+  nameTask = localStorage.getItem('flujoName')
   public data: any[] = [];
   public myTasks:any = [];
   public timezoneValue: string = 'UTC';
-  public dayWorkingTime: object[]  = [{ from: 9, to: 18 }];
+  public dayWorkingTime: object[]  = [{ from: 0, to: 24 }];
   temp:any[] = []
   prueba:boolean = true
   avance:any
+  total:any
+  ColorSemaforo:any
   rol:any = localStorage.getItem('rol')
   flujo:any = localStorage.getItem('flujo')
   ngOnInit(): void {
@@ -37,7 +40,8 @@ export class ViewTaskComponent implements OnInit {
           this.avance = res.avance
           this.data = res.taskFlujo
           this.myTasks = res.myTasks
- 
+          
+
           
         },  
         err=>{
@@ -94,11 +98,11 @@ export class ViewTaskComponent implements OnInit {
 
 //ACTUALIZAR ESTADO  SI EL PORCENTAJE DE AVANCE DE LA TAREA INCREMENTO
   actualizar(task:any){
-    console.log(task)
+  
     this.taskService.setTask(task)
       .subscribe(
         res=>{ 
-          console.log(res)
+  
           location.reload();
         },  
         err=>{
@@ -106,9 +110,33 @@ export class ViewTaskComponent implements OnInit {
         }     
       )
   }
+  //FINALIZAR TAREA
+  finalizar(task:any)
+  {
+    task.Atraso = this.semaforo(task.FechaFin)
+    task.Finalizada = "1"
+    this.taskService.setTask(task)
+    .subscribe(
+      res=>{ 
+
+        location.reload();
+      },  
+      err=>{
+        console.log(err) 
+      }     
+    )
+  }
 
 //CERRAR FLUJO INSTANCIADO
+activarSlider(valor:any)
+{
+  let activar = false;
+  if(valor== "1")
+    activar = true;
+  return activar
+}
 
+//CERRAR EL FLUJO POR COMPLETO Y VOLVER LAS TAREAS FINALIZADAS
 cerrarFlujo()
 {
   this.taskService.setFlujo(this.flujo)
@@ -130,7 +158,7 @@ cerrarFlujo()
     this.taskService.setTaskEstado({task,Comentario})
       .subscribe(
         res=>{ 
-          console.log(res)
+
          // location.reload();
         },  
         err=>{
@@ -144,17 +172,43 @@ cerrarFlujo()
     this.taskService.setTaskBug(task)
       .subscribe(
         res=>{ 
-          console.log(res)
+
         },  
         err=>{
           console.log(err) 
         }     
       )
   }
+
+  semaforo(fecha:Date, final:any=0)
+  {
+    let fecha1 = new Date(fecha)
+    let fecha2 = new Date()
+    let resta = fecha1.getTime() - fecha2.getTime()
+    this.total = Math.round(resta/ (1000*60*60*24))
+    if(this.total < 0){this.ColorSemaforo =0}
+    if(this.total < 8 && this.total > -1){this.ColorSemaforo =1}
+    if(this.total > 7){this.ColorSemaforo =2}
+    return parseInt(this.total) 
+  }
+
   openDialogCerrarFlujo():void{
     const dialogRef = this.dialog.open(ConfirmDialogComponent,{
       width:'350px',
-      data:'Seguro que desea terminar el flujo?'
+      data:'Seguro que desea terminar el flujo?/Terminar Flujo'
+    });
+    dialogRef.afterClosed().subscribe(
+      res=>{ 
+        if(res){
+          this.cerrarFlujo()
+        }
+      });
+  }
+
+  openDialogForzarCierre():void{
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+      width:'350px',
+      data:'Seguro que desea forzar el cierre del flujo?/Forzar Cierre'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 
@@ -166,7 +220,7 @@ cerrarFlujo()
   openDialogRechazarTarea(task:any, opcional:any, AcepRacha:any):void{
     const dialogRef = this.dialog.open(ErrorDialogComponent,{
       width:'350px',
-      data:'Seguro que desea rechazar la tarea?'
+      data:'Seguro que desea rechazar la tarea?/Escribir mensaje'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 
@@ -183,7 +237,7 @@ cerrarFlujo()
   openDialogBug(ID:any):void{
     const dialogRef = this.dialog.open(ErrorDialogComponent,{
       width:'350px',
-      data:'Que error se presento en la tarea?'
+      data:'Que error se presento en la tarea?/Reportar problema'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 

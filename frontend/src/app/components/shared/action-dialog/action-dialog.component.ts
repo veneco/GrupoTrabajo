@@ -13,7 +13,7 @@ export class ActionDialogComponent implements OnInit {
 prueba:any
   ngOnInit(): void {
     this.fluj = this.data
-   console.log(this.fluj.length )
+
   }
   onClickNO():void
   {

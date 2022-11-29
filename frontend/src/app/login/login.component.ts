@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, PipeTransform {
     
     fecha.setDate(fecha.getDate() + 2);
     let datePipe: DatePipe = new DatePipe('en-US');
-    console.log(fecha.toISOString().substring(0, fecha.toISOString().length - 1));
+
   }
 
   login(){

@@ -82,3 +82,7 @@ table {
     width: 650px;
     float: right;
   }
+
+  .centrarTexto{
+    text-align:center;
+  }

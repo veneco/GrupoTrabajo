@@ -78,7 +78,7 @@ export class CreateTaskComponent implements OnInit {
  prueba(flujo:any, index:any ){
 
     this.dataSource = this.tarea[index]
-    console.log(this.dataSource)
+
     this.snackBar.open(flujo.DESCRIPCION, "Cerrar", {
       duration: 20000
     })
@@ -99,7 +99,7 @@ export class CreateTaskComponent implements OnInit {
   create(){
     let pendiente = true
     for (let index = 0; index < this.dataSource.length; index++) {
-      console.log(index)
+
       if(this.usuario[index] == undefined)
         pendiente = false
     }
@@ -195,12 +195,12 @@ export class CreateTaskComponent implements OnInit {
         listado[index].FECHAFIN = fechaFin[index]
         
       }
-      console.log(listado[0].FECHAFIN)
+
 
     this.taskService.createTask(listado, idTarea, this.usuario)
       .subscribe(
         res => {
-          console.log(res)
+
           this.router.navigate(['/tasks'])
         },
         err => {

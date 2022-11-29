@@ -46,7 +46,7 @@ export class TaskService {
     return this.http.put<any>(this.taskUrl, task)
   }
   setTaskEstado(task:any){
-    console.log(task)
+
     const url = `${this.taskUrl}/acepRecha`
     return this.http.put<any>(url, task)
   }

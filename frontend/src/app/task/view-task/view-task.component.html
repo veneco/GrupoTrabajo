@@ -6,7 +6,7 @@
     <app-sidebar></app-sidebar>
     <div class="projects-section">
       <div class="projects-section-header">
-        <p>Tarea ID# {{idTask}}</p>
+        <p>Tarea ID# {{idTask}} - {{nameTask}} </p>
         <p class="time"></p>
       </div>
       <div class="projects-section-line">
@@ -20,7 +20,11 @@
         <span class="status-type">Avance </span>
         <mat-progress-bar class="bar" mode="determinate" value={{avance}}></mat-progress-bar>
         <span class="status-type"><strong>{{avance}}% </strong></span>
-        <span *ngIf="avance == 100 && rol== 5"><button mat-raised-button  color="primary" (click)="openDialogCerrarFlujo()">Terminar Flujo</button></span>
+        <span *ngIf="rol== 3 || rol == 8">
+          <span *ngIf="avance == 100;else forzarCierre"><button mat-raised-button  color="primary" (click)="openDialogCerrarFlujo()">Terminar Flujo</button></span>
+          <ng-template #forzarCierre><button mat-raised-button  color="warn" (click)="openDialogForzarCierre()">Forzar Cierre</button></ng-template>
+        </span>
+        
       </div>     
       <div class="project-boxes jsGridView"  name="asd">
         <div>
@@ -30,7 +34,7 @@
                 [columns]="columnSettings"
                 [timelineSettings]="timelineSettings" timezone="IST"
                 [includeWeekend]="true"
-                [dayWorkingTime]="dayWorkingTime">
+                >
             </ejs-gantt>
             </div>
         <div class="project-box-wrapper">
@@ -56,11 +60,12 @@
                 <div class="star-checkbox">
                   <input type="checkbox" id="star-1">
                   <label for="star-1" >
-                    <span *ngIf="bugButton(element)"> <i  class="gg-debug" (click)="openDialogBug(element.TaskID)"></i></span>
+                    <span matTooltip="Reportar Problema" *ngIf="bugButton(element)"> <i  class="gg-info" (click)="openDialogBug(element.TaskID)"></i></span>
                     
                   </label>
                 </div>
               </div>
+              
               <p class="message-line">
                 <a class="button-row" *ngIf="element.Acepta == 0; else templateName">
                     <mat-button-toggle-group [(ngModel)]="element.Acepta">
@@ -69,6 +74,7 @@
                 </mat-button-toggle-group>
                 </a>
                 <ng-template #templateName>
+                  <span *ngIf="semaforo(element.FechaInicio)< 1; else fueradetiempo">
                     <p class="message-line">
                         <mat-slider color="primary"
                             thumbLabel
@@ -77,11 +83,40 @@
                             step="1"
                             min=0
                             max="100"
-                            aria-label="units">
+                            aria-label="units"
+                            disabled={{activarSlider(element.Finalizada)}}>
                         </mat-slider>
-                        <button mat-raised-button [disabled]="false" color="primary" (click)="actualizar(element)">Actualizar</button>
+                        <span *ngIf="element.Finalizada=='0'">
+                          <span *ngIf="element.Avance !=100 && element; else terminada"><button mat-raised-button [disabled]="false" color="primary" (click)="actualizar(element)">Actualizar</button></span>
+                          <ng-template #terminada><button mat-raised-button [disabled]="false" color="primary" (click)="finalizar(element)">Finalizar</button></ng-template>
+                        </span>
                       </p>
+                      <span *ngIf="element.Finalizada=='0'; else diasAvance">
+                        <span *ngIf="semaforo(element.FechaFin) > -1; else retrasado" > <p class="green">Tiempo restante: {{semaforo(element.FechaFin)}} dias</p></span>
+                        <ng-template #retrasado><p class="red"> Retrasado por: {{semaforo(element.FechaFin)}} dias</p></ng-template>
+                      </span>
+                      <ng-template #diasAvance>Tarea Finalizada</ng-template>
+                    </span>
+                    <ng-template #fueradetiempo>
+                      <p class="message-line">
+                        <mat-slider color="primary"
+                            thumbLabel
+                            [(ngModel)] = "element.Avance"
+                            tickInterval="1000"
+                            step="1"
+                            min=0
+                            max="100"
+                            aria-label="units"
+                            disabled="true">
+                        </mat-slider>
+                      </p>
+                      <span>
+                        <p class="green"> Tarea comienza en: {{semaforo(element.FechaInicio)}} dias</p>
+                      </span>
+                    </ng-template>
+
                 </ng-template>
+                
               </p>
             </div>
           </div>

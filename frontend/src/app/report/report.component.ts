@@ -3,6 +3,8 @@ import { Router } from '@angular/router'
 import { TaskService } from 'src/app/service/task.service';
 import { ReportService } from '../service/report.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../components/shared/confirm-dialog/confirm-dialog.component';
+import  {MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-report',
@@ -14,6 +16,7 @@ export class ReportComponent implements OnInit {
   constructor(private router: Router,
     private taskService: TaskService,
     private reportService: ReportService,
+    public dialog: MatDialog,
     private snackBar: MatSnackBar) { }
 
 
@@ -24,7 +27,8 @@ export class ReportComponent implements OnInit {
     displayedColumns: string[] = ['ID', 'NOMBRE', 'DURACION', 'AVANCE'];
 
     flujos:any = []
-    bugColumns: string[] = ['BugID','FlujoID', 'TaskID','TaskName', 'CreadoPor', 'BugComentario','Accion', 'Resolver'];
+    flujoCerrado: string[] = ['ID', 'NOMBRE','RESPONSABLE', 'DURACION','ATRASO'];
+    flujoEnCurso: string[] = ['ID', 'NOMBRE', 'DURACION', 'AVANCE', 'REASIGNAR'];
 
 
   ngOnInit(): void {
@@ -32,21 +36,24 @@ export class ReportComponent implements OnInit {
       this.reportService.getGrupo()
       .subscribe(
       res=>{
+        let idtemporal:any = []
+  
         this.empleados = res
-        this.empleados.forEach( (elemento: any) => {
-          if (!this.grupoTrabajo.includes(elemento.GRUPOTRABAJO_ID)) {
-            this.grupoTrabajo.push(elemento.GRUPOTRABAJO_ID);
+        this.empleados.forEach( (element: any) => {
+          if (!idtemporal.includes(element.GRUPOTRABAJO_ID)) {
+            idtemporal.push(element.GRUPOTRABAJO_ID);
+            this.grupoTrabajo.push({ID:element.GRUPOTRABAJO_ID,NOMBRE:element.NOMBREGRUPO});
           }
         });
-        console.log(this.empleados)
+
       },  
       err=> console.log(err)       
     ),
     this.reportService.getTareas()
       .subscribe(
         res=>{
-          this.tareas = res
           console.log(res)
+          this.tareas = res
         },  
         err=>{
           console.log(err) 
@@ -56,7 +63,7 @@ export class ReportComponent implements OnInit {
       .subscribe(
         res=>{
           this.flujos = res
-          console.log(res)
+
         },  
         err=>{
           console.log(err) 
@@ -68,13 +75,15 @@ export class ReportComponent implements OnInit {
   filtrarFlujos(userID:any){
     const flujosFiltradas = this.tareas.filter((flujo: any) => flujo.IDRESPONSABLE == userID)
     let flujosunicos:any =[]
+    let flujosTemp:any =[]
     flujosFiltradas.forEach( (elemento: any) => {
-      if (!flujosunicos.includes(elemento.FLUJO_IN_ID)) {
-        flujosunicos.push(elemento.FLUJO_IN_ID);
+      if (!flujosTemp.includes(elemento.FLUJO_IN_ID)) {
+        flujosTemp.push(elemento.FLUJO_IN_ID);
+        flujosunicos.push(elemento);
     }
     
   }); 
-    return flujosunicos
+    return flujosunicos.reverse()
   }
   //FILTRAR EMPLEADOS POR GRUPO DE TRABAJO
   filtrarEmpleados(grupoID:any){
@@ -83,15 +92,15 @@ export class ReportComponent implements OnInit {
   }
 //FILTRAR FLUJOS POR GRUPO DE TRABAJO
   filtrarFlujosGrupo(grupoID:any, finalizado:String){
-    const empleadosFiltrados = this.flujos.filter((flujo: any) => flujo.GRUPOTRABAJO_ID == grupoID && flujo.DELETED == finalizado)
-    return empleadosFiltrados
+    const flujosFiltrados = this.flujos.filter((flujo: any) => flujo.GRUPOTRABAJO_ID == grupoID && flujo.DELETED == finalizado)
+    return flujosFiltrados.reverse()
   }
 
   //FILTRAR FLUJOS POR GRUPO DE TRABAJO
   filtrarTareasGrupo(flujoID:any){
-    const flujosFiltradas = this.tareas.filter((tarea: any) => tarea.FLUJO_IN_ID == flujoID)
-   // console.log(flujosFiltradas)
-    return flujosFiltradas
+    const tareaFiltradas = this.tareas.filter((tarea: any) => tarea.FLUJO_IN_ID == flujoID)
+
+    return tareaFiltradas
   }
 
   
@@ -124,6 +133,34 @@ export class ReportComponent implements OnInit {
     return carga
   }
 
+  reasignar(tarea:any){
+    const dialogReasignar = this.dialog.open(ConfirmDialogComponent,{
+      width:'350px',
+      data:'Seguro que desea reasignar esta tarea?'
+    });
+    dialogReasignar.afterClosed().subscribe(
+      res=>{ 
+        if(res==undefined){
+          
+          this.snackBar.open("No se envio la reasignacion de la tarea", "Cerrar", {
+            duration: 3000
+          }) 
+        }else{
+
+         // ACTUALIZAR DETALLESTAREA
+         let Comentario = "Reasignado por " + localStorage.getItem('nombre') + " a través de los reportes"
+         let task={TaskID: tarea.ID, Acepta:1, Rechaza:1}
+         this.taskService.setTaskEstado({task,Comentario})
+          .subscribe(
+            res=>{ 
+            },  
+            err=>{
+              console.log(err) 
+            }     
+          )
+        }
+      });
+  }
 
 
 }

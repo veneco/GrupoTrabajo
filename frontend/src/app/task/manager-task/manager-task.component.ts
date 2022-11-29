@@ -41,6 +41,7 @@ export class ManagerTaskComponent implements OnInit {
               this.tareasRechazadas.push(this.flujosRechazadas[i].tareas[j])
             }   
           }
+
         },  
         err=>{
           console.log(err) 
@@ -99,11 +100,11 @@ export class ManagerTaskComponent implements OnInit {
     if(tarea.Reasignado == 1)
     {
       this.tareasRechazadas.splice(this.tareasRechazadas.indexOf(tarea))
-      console.log("tarea reasignada")
+
       this.taskService.setReasignarTarea(tarea)
       .subscribe(
         res=>{
-          console.log(res)
+
         },  
         err=> console.log(err)       
       )
@@ -139,7 +140,6 @@ export class ManagerTaskComponent implements OnInit {
       .subscribe(
                 res=>{
                   
-                  console.log(res)
                 },  
                 err=> console.log(err)       
               )
@@ -188,7 +188,6 @@ export class ManagerTaskComponent implements OnInit {
              this.taskService.setTaskEstado({task,Comentario})
               .subscribe(
                 res=>{ 
-                  console.log(res)
                 },  
                 err=>{
                   console.log(err) 
@@ -205,7 +204,7 @@ export class ManagerTaskComponent implements OnInit {
         
         const dialogDias = this.dialog.open(ErrorDialogComponent,{
           width:'350px',
-          data:'Cuantos dias le asignara a la tarea?'
+          data:'Cuantos dias le asignara a la tarea?/Asignacion de duracion'
 
         });
         dialogDias.afterClosed().subscribe(

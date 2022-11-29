@@ -42,7 +42,7 @@ export class ListTaskComponent implements OnInit {
     this.taskService.getNoti()
       .subscribe(
         res=>{
-          console.log(res)
+  
           this.notificaciones = res 
         },  
         err=>{
@@ -53,7 +53,7 @@ export class ListTaskComponent implements OnInit {
       .subscribe(
         res=>{
           let tempFlujo = res.flujo[0]
-          console.log(res.flujo[0])
+
           this.datos = res.userData
           for (let i = 0; i < tempFlujo.length; i++) {
             tempFlujo[i].FECHAFIN = this.formatDate(tempFlujo[i].FECHAFIN)
@@ -68,9 +68,9 @@ export class ListTaskComponent implements OnInit {
           {
             this.openDialogCerrarFlujo()
             localStorage.setItem('activo', '1')
-            console.log("logrado")
+
           } 
-          console.log(this.flujoAtrasado.length)       
+   
         },  
         err=>{
           console.log(err) 
@@ -89,7 +89,9 @@ export class ListTaskComponent implements OnInit {
     });
   }
   viewFlujo(data:any){
+
     localStorage.setItem('flujo', data.ID)
+    localStorage.setItem('flujoName', data.DESCRIPCION)
     this.router.navigate(['/view'])
   }
   formatDate(date: any): string{   
@@ -122,7 +124,7 @@ export class ListTaskComponent implements OnInit {
     let diasTotal = Math.round(diasTotalMili/ (1000*60*60*24))
     let diasAvance = Math.round(diasAvanceMili/ (1000*60*60*24))
     let totalAvance = Math.round((diasAvance * 100 )/ diasTotal)
-    //console.log(flujo.ID+" "+ diasTotal + " " + diasAvance +" "+ totalAvance)
+
     return totalAvance
   }
   delete(deleteTask:any){
