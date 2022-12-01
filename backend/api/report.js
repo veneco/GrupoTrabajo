@@ -50,14 +50,22 @@ router.get('/flujos',auth, async (req, res) => {
     try {
         if(rol==8)
         {
-            flujo = await db.flujo.findAll({order: [['ID', 'ASC']]  })
+            flujo = await db.sequelize.query(
+                "select * from flujo_in A" +
+                " LEFT JOIN (select ID AS IDUSER,  nombre || ' ' || apellidop || ' ' || apellidom AS RESPONSABLENOMBRE from USUARIO)B"+
+                " ON A.RESPONSABLE = B.IDUSER  ORDER BY A.ID ASC"
+            )
         }
         else
         {
-            flujo = await db.flujo.findAll({ where: { GRUPOTRABAJO_ID: grupoUser}, order: [['ID', 'ASC']]  })
+            flujo = await db.sequelize.query(
+                "select * from flujo_in A" +
+                " LEFT JOIN (select ID AS IDUSER,  nombre || ' ' || apellidop || ' ' || apellidom AS RESPONSABLENOMBRE from USUARIO)B"+
+                " ON A.RESPONSABLE = B.IDUSER WHERE GRUPOTRABAJO_ID = "+ grupoUser+" ORDER BY A.ID ASC"
+            )
         }
         
-        res.status(200).send(flujo)
+        res.status(200).send(flujo[0])
     } catch (error) {
         res.status(400).send('no se pudo logear '+ error)
     }

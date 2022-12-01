@@ -20,6 +20,7 @@ export class ManagerTaskComponent implements OnInit {
     private taskService: TaskService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar) { }
+   
     dataSource:any
     responsable:any
     estadoAccion:any

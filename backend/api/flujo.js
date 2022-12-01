@@ -12,7 +12,6 @@ router.get('/list',auth, async (req, res) => {
     let userData = req.user
     let grupoTrabajo = req.user.grupo;
     let flujo = []
-    console.log(rol)
     try {
         if(rol==3 || rol==8){
             flujo = await db.sequelize.query(
