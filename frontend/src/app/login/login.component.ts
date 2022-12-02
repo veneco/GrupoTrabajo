@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit, PipeTransform {
     
     fecha.setDate(fecha.getDate() + 2);
     let datePipe: DatePipe = new DatePipe('en-US');
+    this.auth.logoutUser()
 
   }
 

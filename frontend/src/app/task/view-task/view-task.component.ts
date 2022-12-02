@@ -220,7 +220,7 @@ cerrarFlujo()
   openDialogRechazarTarea(task:any, opcional:any, AcepRacha:any):void{
     const dialogRef = this.dialog.open(ErrorDialogComponent,{
       width:'350px',
-      data:'Seguro que desea rechazar la tarea?/Escribir mensaje'
+      data:'Seguro que desea rechazar la tarea?/Escribir mensaje/0'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 
@@ -237,7 +237,7 @@ cerrarFlujo()
   openDialogBug(ID:any):void{
     const dialogRef = this.dialog.open(ErrorDialogComponent,{
       width:'350px',
-      data:'Que error se presento en la tarea?/Reportar problema'
+      data:'Que error se presento en la tarea?/Reportar problema/0'
     });
     dialogRef.afterClosed().subscribe(
       res=>{ 

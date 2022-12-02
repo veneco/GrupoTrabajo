@@ -203,7 +203,7 @@ export class ManagerTaskComponent implements OnInit {
         
         const dialogDias = this.dialog.open(ErrorDialogComponent,{
           width:'350px',
-          data:'Cuantos dias le asignara a la tarea?/Asignacion de duracion'
+          data:'Cuantos dias le asignara a la tarea?/Asignacion de duracion/1'
 
         });
         dialogDias.afterClosed().subscribe(

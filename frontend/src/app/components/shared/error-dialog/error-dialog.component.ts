@@ -12,6 +12,7 @@ export class ErrorDialogComponent implements OnInit {
   comentario:string =""
   mensaje = this.data.toString().split('/')[0]
   titulo = this.data.toString().split('/')[1]
+  opcion:any = this.data.toString().split('/')[2]
   ngOnInit(): void {
   }
   onClickNO():void

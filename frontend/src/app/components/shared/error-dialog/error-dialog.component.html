@@ -2,8 +2,10 @@
 <div class="center" mat-dialog-content>{{mensaje}}</div>
 <div class="center" mat-dialog-content>
     <mat-form-field appearance="fill">
-         <input matInput type="number" [(ngModel)]="comentario" placeholder="Escriba aqui...">
+         <input  *ngIf="opcion==0;else number" matInput [(ngModel)]="comentario" placeholder="Escriba aqui...">
+         <ng-template #number> <span  matTooltip="ATRASADA"><input matInput type="number" [(ngModel)]="comentario" placeholder="Escriba aqui..."></span> </ng-template>
     </mat-form-field>
+   
 </div>
 <div mat-dialog-actions>
     
