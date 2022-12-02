@@ -90,7 +90,8 @@ import {MatTreeModule} from '@angular/material/tree';
     MatDialogModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatTreeModule
+    MatTreeModule,
+    MatNativeDateModule
     
   ],
   entryComponents:[ConfirmDialogComponent, ErrorDialogComponent, ActionDialogComponent],

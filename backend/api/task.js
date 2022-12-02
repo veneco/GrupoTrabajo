@@ -220,6 +220,7 @@ router.post('/:id', auth, async(req, res) => {
     let FECHAFIN =req.body[i].FECHAFIN;
     let AVANCE =0;
     let DELETED = 0;
+    let ATRASO = 0;
     let FLUJO_IN_ID =req.params.id;
     let PREDECEDORA =req.body[i].TAREA.PREDECEDORA;
     let SUBTAREA =req.body[i].TAREA.DE_SUBTAREA;
@@ -241,6 +242,7 @@ router.post('/:id', auth, async(req, res) => {
             PREDECEDORA,
             SUBTAREA,
             ETIQUETA_ID,
+            ATRASO
             
         });
         let TAREA_ID = tarea.ID
