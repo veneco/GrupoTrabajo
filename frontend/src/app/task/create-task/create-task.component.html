@@ -17,13 +17,14 @@
                 <mat-form-field>
                     <textarea  [(ngModel)]="createTask.descripcion" matInput placeholder="Nombre"></textarea>
                 </mat-form-field>
-                <mat-form-field appearance="fill">
+
+                <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Fecha Inicio</mat-label>
                     <input [(ngModel)]="createTask.fechainicio" matInput [matDatepicker]="picker1">
                     <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
+                  </mat-form-field>
                 <h2>Tareas</h2>
 
 

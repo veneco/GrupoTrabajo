@@ -44,7 +44,7 @@ router.get('/flujoPL',auth, async (req, res) => {
 
         const flujo = await db.sequelize.query(
             "select * from FLUJO_PL where negocio_id = "+ negocio)
-            for (let index = 0; index < flujo.length; index++) {
+            for (let index = 0; index < flujo[0].length; index++) {
                 let temp = await db.sequelize.query(
                     "select * from tarea_pl  where flujo_pl_id = "+flujo[0][index].ID+" ORDER BY ORDEN;") 
                     tarea.push(temp[0])

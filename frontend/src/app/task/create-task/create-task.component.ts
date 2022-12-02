@@ -72,9 +72,9 @@ export class CreateTaskComponent implements OnInit {
 
   }
  prueba(flujo:any, index:any ){
-
+    console.log(flujo)
     this.dataSource = this.tarea[index]
-
+    console.log(this.tarea)
     this.snackBar.open(flujo.DESCRIPCION, "Cerrar", {
       duration: 20000
     })
