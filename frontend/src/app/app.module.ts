@@ -26,7 +26,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSliderModule} from '@angular/material/slider';
 import { ViewTaskComponent } from './task/view-task/view-task.component';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+//import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -45,6 +45,7 @@ import { ActionDialogComponent } from './components/shared/action-dialog/action-
 import { ReportComponent } from './report/report.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTreeModule} from '@angular/material/tree';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +80,7 @@ import {MatTreeModule} from '@angular/material/tree';
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
-    MatMomentDateModule,
+    //MatMomentDateModule,
     MatSliderModule,
     MatProgressBarModule,
     MatButtonToggleModule,

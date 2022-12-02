@@ -1,21 +1,18 @@
 import { Component, OnInit} from '@angular/core';
 import { TaskService } from '../../service/task.service'
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import * as _moment from 'moment'
+
 import { Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
 
-const moment =  _moment;
+
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
-  providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ],
+  providers: [  ],
   styleUrls: ['./create-task.component.css'],
   animations: [
     trigger('detailExpand', [

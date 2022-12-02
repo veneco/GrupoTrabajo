@@ -77,6 +77,7 @@ export class ReportComponent implements OnInit {
   }
   filtrarFlujos(userID:any){
     const flujosFiltradas = this.tareas.filter((flujo: any) => flujo.IDRESPONSABLE == userID)
+
     let flujosunicos:any =[]
     let flujosTemp:any =[]
     flujosFiltradas.forEach( (elemento: any) => {
@@ -116,12 +117,25 @@ export class ReportComponent implements OnInit {
   }
 
 //CALCULAR CARGA DE TRABAJO
-  calcularCarga(userID:any){
+  calcularCarga(userID:any, alt=0){
     let carga:any = 0
+    let fechahoy:any = new Date()
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    
     const tareasFiltradas = this.tareas.filter((tarea: any) => tarea.IDRESPONSABLE == userID)
     tareasFiltradas.forEach((element:any) => {
-      carga = carga + element.DURACION
+      let fechainico:any = new Date(element.FECHAINICIO)
+      let resta = fechainico.getTime() - fechahoy.getTime()
+      let total = Math.round(resta / MS_PER_DAY)
+      if (total < 8 && total > -1){
+        carga = carga + element.DURACION
+
+      }
+       
     });
+    if(alt==0){
+      carga = carga * 14
+    }
     return carga
   }
 
@@ -210,7 +224,7 @@ export class ReportComponent implements OnInit {
     
     doc.text("Documento generado por: "+ this.responsable ,9.5,finalTable) 
     
-    doc.save('flujos-'+flujo.ID+"-" + Date().toString().split('GMT')[0])
+    doc.save('Flujo-'+flujo.ID+"-" + Date().toString().split('GMT')[0])
   }
 
   logo64(){

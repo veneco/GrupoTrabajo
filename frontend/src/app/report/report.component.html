@@ -25,7 +25,7 @@
                                   class="example-margin"
                                   value={{calcularCarga(empleado.ID)}}>
                               </mat-progress-spinner>
-                              <h2 class="example-h2">{{calcularCarga(empleado.ID)}} / 100</h2>
+                              <h2 class="example-h2">Tu carga laboral esta semana es de {{calcularCarga(empleado.ID,1)}} puntos</h2>
                               
                             </mat-card-content>
                           </mat-card>
@@ -108,7 +108,7 @@
                                               class="example-margin"
                                               value={{calcularAvance(flujo.ID)}}>
                                           </mat-progress-spinner>
-                                          <h2 class="example-h2">{{calcularAvance(flujo.ID)}} / 100</h2>
+                                          <h2 class="example-h2">{{calcularAvance(flujo.ID)}} / 100%</h2>
                                           
                                         </mat-card-content>
                                       </mat-card>
@@ -185,7 +185,7 @@
                                               class="example-margin"
                                               value={{calcularAvance(flujo.ID)}}>
                                           </mat-progress-spinner>
-                                          <h2 class="example-h2">{{calcularAvance(flujo.ID)}} / 100</h2>
+                                          <h2 class="example-h2">{{calcularAvance(flujo.ID)}} / 100%</h2>
                                           
                                         </mat-card-content>
                                       </mat-card>

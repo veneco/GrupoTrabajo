@@ -6,9 +6,7 @@ import  {MatDialog } from '@angular/material/dialog';
 import { ActionDialogComponent } from 'src/app/components/shared/action-dialog/action-dialog.component';
 import { ConfirmDialogComponent } from 'src/app/components/shared/confirm-dialog/confirm-dialog.component';
 import { ErrorDialogComponent } from 'src/app/components/shared/error-dialog/error-dialog.component';
-import * as _moment from 'moment'
 
-const moment =  _moment;
 @Component({
   selector: 'app-manager-task',
   templateUrl: './manager-task.component.html',
@@ -209,7 +207,7 @@ export class ManagerTaskComponent implements OnInit {
 
         });
         dialogDias.afterClosed().subscribe(
-          res=>{ 
+          res=>{
             if(res==undefined){
               
               this.snackBar.open("No se incrementaron los dias de la tarea", "Cerrar", {

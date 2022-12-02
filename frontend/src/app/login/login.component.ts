@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, PipeTransform } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +16,10 @@ export class LoginComponent implements OnInit, PipeTransform {
     correo: null,
     password: null
   }
-  constructor(public auth: AuthService,
-    private router: Router) { }
+  constructor(
+    public auth: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar) { }
 
   transform(value: any, ...args: any[]) {
     throw new Error('Method not implemented.');
@@ -41,7 +43,9 @@ export class LoginComponent implements OnInit, PipeTransform {
           localStorage.setItem('activo', '0')
           this.router.navigate(['/tasks'])
         },
-        err => console.log(err)
+        err => this.snackBar.open("Contraseña o Usuario incorrecto", "Cerrar", {
+          duration: 3000
+        })
       )
   }
 
