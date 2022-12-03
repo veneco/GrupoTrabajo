@@ -192,13 +192,13 @@ export class ReportComponent implements OnInit {
     if(tipo == 0){
       largoCell= 40
       datoporFila = datos.split('Reasignar')
-      doc.text("Informe de progreso por parte de la empresa Process S.A para el flujo en curso '"+flujo.NOMBRE+"' Nombre: '"+flujo.DESCRIPCION+"'",10,50)
-      doc.text(" la cual fue instanciada en fecha: "+ (flujo.FECHAINICIO.toString().split('T')[0])+" por el encargado: "+flujo.RESPONSABLENOMBRE ,9.5,55) 
+      doc.text("Informe de progreso por parte de la empresa Process S.A para el flujo '"+flujo.NOMBRE+"' Nombre: '"+flujo.DESCRIPCION+"'",10,50)
+      doc.text(" la cual fue instanciada en fecha: "+ (flujo.FECHAINICIO.toString().split('T')[0])+" por el encargado: "+flujo.RESPONSABLENOMBRE+" y el cual se encuenta en curso"  ,9.5,55) 
     }else{
       largoCell = 35
       finalTable = 100
       datoporFila = datos.split('  ')
-      doc.text("Informe final por parte de la empresa Process S.A para el flujo en curso '"+flujo.NOMBRE+"' Nombre: '"+flujo.DESCRIPCION+"'",10,50)
+      doc.text("Informe final por parte de la empresa Process S.A para el flujo '"+flujo.NOMBRE+"' Nombre: '"+flujo.DESCRIPCION+"'",10,50)
       doc.text(" la cual fue instanciada en fecha: "+ (flujo.FECHAINICIO.toString().split('T')[0])+" por el encargado: "+flujo.RESPONSABLENOMBRE+" y el cual ya se encuenta finalizado" ,9.5,55) 
     }
  
