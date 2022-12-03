@@ -24,7 +24,7 @@ app.use('/api/problema', problema)
 app.use('/api/report', report)
 
 const port = process.env.PORT || 3003
-app.listen(port, () => console.log('conectado en el puerto '+ port));
+app.listen(port, () => console.log('conectando...'));
 db.sequelize.authenticate()
 .then (() => console.log('conectado a la base de datos'))
 .catch((e) => console.log("fallo " + e))

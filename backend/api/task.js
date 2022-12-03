@@ -83,7 +83,6 @@ router.get('/:id', auth, async (req, res) => {
 });
 //ACTUALIZAR TAREA
 router.put('/', auth, async (req, res) => {
-    console.log(req.body)
     let idTask = req.body.TaskID
     let AVANCE = req.body.Avance
     let ATRASO = req.body.Atraso

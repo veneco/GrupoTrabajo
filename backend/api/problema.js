@@ -105,7 +105,6 @@ router.put('/finishProblem', auth, async(req, res) => {
 
     //LLAMAR TAREAS DE UN PROBLEMA
 router.get('/:id', auth, async(req, res) => {
-   console.log(req.params)
     let FLUJO_IN_ID = req.params.id;
 
     try {
